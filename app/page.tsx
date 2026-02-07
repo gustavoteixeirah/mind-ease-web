@@ -26,12 +26,12 @@ export default async function Page() {
       <div className="flex gap-4">
         <Link href="/handler/sign-in">
           <Button size="lg" variant="default">
-            Login
+            Entrar
           </Button>
         </Link>
         <Link href="/handler/sign-up">
           <Button size="lg" variant="outline">
-            Sign Up
+            Cadastrar
           </Button>
         </Link>
       </div>

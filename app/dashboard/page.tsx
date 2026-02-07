@@ -33,15 +33,15 @@ export default async function DashboardPage() {
 						}}
 					>
 						<Button variant="outline" type="submit">
-							Sign Out
+							Sair
 						</Button>
 					</form>
 				</div>
 				<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 					<div>
-						<h1 className="text-2xl font-bold">Welcome to Mind Ease</h1>
+						<h1 className="text-2xl font-bold">Bem-vindo ao Mind Ease</h1>
 						<p className="text-muted-foreground">
-							Hello, {user.displayName || user.primaryEmail}!
+							Olá, {user.displayName || user.primaryEmail}!
 						</p>
 					</div>
 				</div>
@@ -49,18 +49,18 @@ export default async function DashboardPage() {
 				<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 					<Card>
 						<CardHeader>
-							<CardTitle>Profile</CardTitle>
-							<CardDescription>Your account information</CardDescription>
-						</CardHeader>
-						<CardContent>
-							<div className="space-y-2">
-								<p className="text-sm">
-									<span className="font-medium">Email:</span>{" "}
-									{user.primaryEmail}
-								</p>
-								<p className="text-sm">
-									<span className="font-medium">Name:</span>{" "}
-									{user.displayName || "Not set"}
+						<CardTitle>Perfil</CardTitle>
+						<CardDescription>Suas informações de conta</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<div className="space-y-2">
+							<p className="text-sm">
+								<span className="font-medium">Email:</span>{" "}
+								{user.primaryEmail}
+							</p>
+							<p className="text-sm">
+								<span className="font-medium">Nome:</span>{" "}
+								{user.displayName || "Não definido"}
 								</p>
 							</div>
 						</CardContent>
@@ -68,24 +68,24 @@ export default async function DashboardPage() {
 
 					<Card>
 						<CardHeader>
-							<CardTitle>Getting Started</CardTitle>
-							<CardDescription>Start your wellness journey</CardDescription>
-						</CardHeader>
-						<CardContent>
-							<p className="text-sm text-muted-foreground">
-								Your dashboard content will appear here.
+						<CardTitle>Começando</CardTitle>
+						<CardDescription>Inicie sua jornada de bem-estar</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<p className="text-sm text-muted-foreground">
+							O conteúdo do seu painel aparecerá aqui.
 							</p>
 						</CardContent>
 					</Card>
 
 					<Card>
 						<CardHeader>
-							<CardTitle>Resources</CardTitle>
-							<CardDescription>Helpful materials</CardDescription>
-						</CardHeader>
-						<CardContent>
-							<p className="text-sm text-muted-foreground">
-								Access wellness resources and tools.
+						<CardTitle>Recursos</CardTitle>
+						<CardDescription>Materiais úteis</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<p className="text-sm text-muted-foreground">
+							Acesse recursos e ferramentas de bem-estar.
 							</p>
 						</CardContent>
 					</Card>
