@@ -48,6 +48,9 @@
 }
 
 :root {
+  --mindease-accent: #7eb8da;
+  --mindease-base-font-size: 16px;
+  font-size: var(--mindease-base-font-size);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -122,5 +125,25 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  button,
+  [role="button"],
+  a[href],
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"],
+  [tabindex="0"]:not([tabindex="-1"]) {
+    cursor: pointer;
+  }
+  /* Acessibilidade: foco visível para navegação por teclado */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-[var(--mindease-accent,#7eb8da)];
+  }
+  button:focus-visible,
+  a:focus-visible,
+  [role="button"]:focus-visible,
+  input:focus-visible,
+  [tabindex="0"]:focus-visible {
+    @apply outline-2 outline-offset-2 outline-[var(--mindease-accent,#7eb8da)];
   }
 }

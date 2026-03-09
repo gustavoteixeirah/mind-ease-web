@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { StackProvider, StackTheme } from "@stackframe/stack";
-import { stackClientApp } from "../stack/client";
+import { stackClientApp } from "@/stack/client";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -19,6 +19,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Mind Ease",
   description: "Sua jornada de bem-estar",
+  icons: {
+    icon: "/mindEase-icon-preto.svg",
+  },
 };
 
 export default function RootLayout({
