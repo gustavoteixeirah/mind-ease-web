@@ -64,9 +64,12 @@ export function DesktopSidebar() {
           <button
             onClick={handleNewTask}
             aria-label="Criar nova tarefa"
-            className="w-full aspect-square rounded-xl bg-[#DCE9F5] flex items-center justify-center hover:bg-blue-200 transition-colors"
+            className={cn(
+              "w-full aspect-square rounded-xl bg-[rgb(var(--user-theme))] text-[#1D1A1A] flex items-center justify-center",
+              "hover:bg-[#757373] hover:text-[#F7F7F7] hover:cursor-pointer transition-colors",
+            )}
           >
-            <Plus className="w-5 h-5 text-[#1D1A1A]" strokeWidth={2} />
+            <Plus className="w-5 h-5" strokeWidth={2} />
           </button>
         </div>
 

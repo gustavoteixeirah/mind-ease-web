@@ -60,9 +60,9 @@ export function MobileNav() {
       <button
         onClick={handleNewTask}
         aria-label="Criar nova tarefa"
-        className="w-12 h-12 rounded-xl bg-[rgb(var(--user-theme))] flex items-center justify-center mr-2 hover:bg-blue-200 transition-colors"
+        className="w-12 h-12 rounded-xl bg-[rgb(var(--user-theme))] flex items-center justify-center mr-2 hover:bg-[#757373] hover:text-[#F7F7F7] transition-colors"
       >
-        <Plus className="w-5 h-5 text-[#1D1A1A]" strokeWidth={2} />
+        <Plus className="w-5 h-5" strokeWidth={2} />
       </button>
     </nav>
   );
