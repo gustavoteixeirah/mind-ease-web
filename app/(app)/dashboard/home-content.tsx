@@ -1,26 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { Target, Music, CheckSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTasks } from "@/lib/tasks/tasks-context";
 import { cn } from "@/lib/utils";
-
-export type TaskItem = {
-  id: string;
-  title: string;
-  done?: boolean;
-  isFocus?: boolean;
-};
-
-const FOCUS_NOW_TASKS: TaskItem[] = [
-  { id: "1", title: "Revisar apresentação", isFocus: true },
-];
-
-const TODAY_TASKS: TaskItem[] = [
-  { id: "2", title: "Escrever dissertação", isFocus: true },
-  { id: "3", title: "Ler 3 capítulos", isFocus: true },
-  { id: "4", title: "Escrever e-mails", done: true },
-];
 
 type EnergyState = "calmo" | "presente" | "focado";
 
@@ -33,6 +18,7 @@ function formatDate(date: Date) {
 
 export function HomeContent({ userName }: { userName: string }) {
   const [energy, setEnergy] = useState<EnergyState>("presente");
+  const { focusNowTask, todayTasks, toggleTask, focusNowId } = useTasks();
   const today = formatDate(new Date());
 
   return (
@@ -81,26 +67,51 @@ export function HomeContent({ userName }: { userName: string }) {
         <h2 className="text-lg font-semibold text-[#1a1a1a]">Foque agora</h2>
         <p className="mb-4 text-sm text-[#6b6b6b]">Escolhida para seu momento.</p>
         <ul className="space-y-3">
-          {FOCUS_NOW_TASKS.map((task) => (
+          {focusNowTask ? (
             <li
-              key={task.id}
-              className="flex items-center gap-3 rounded-xl border border-[#e8e8e8] bg-white px-4 py-3"
+              role="button"
+              tabIndex={0}
+              onClick={() => toggleTask(focusNowTask.id)}
+              onKeyDown={(e) => e.key === "Enter" && toggleTask(focusNowTask.id)}
+              className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#e8e8e8] bg-white px-4 py-3 transition-colors hover:bg-[#f8f8f8]"
             >
-              <span className="flex size-5 shrink-0 items-center justify-center rounded-full border-2 border-[#6b6b6b]" />
-              <span className="flex-1 text-[#1a1a1a]">{task.title}</span>
-              <Target className="size-5 text-[#6b6b6b]" />
+              {focusNowTask.done ? (
+                <CheckSquare className="size-5 shrink-0 text-[#3b82f6]" />
+              ) : (
+                <span className="flex size-5 shrink-0 items-center justify-center rounded-full border-2 border-[#6b6b6b]" />
+              )}
+              <span
+                className={cn(
+                  "flex-1",
+                  focusNowTask.done ? "text-[#6b6b6b] line-through" : "text-[#1a1a1a]"
+                )}
+              >
+                {focusNowTask.title}
+              </span>
+              <Target className="size-5 shrink-0 text-[#6b6b6b]" />
             </li>
-          ))}
+          ) : (
+            <li className="rounded-xl border border-dashed border-[#e8e8e8] px-4 py-3 text-center text-sm text-[#6b6b6b]">
+              Nenhuma tarefa em foco.{" "}
+              <Link href="/tarefas" className="font-medium text-[#1a1a1a] underline">
+                Escolher na aba Tarefas
+              </Link>
+            </li>
+          )}
         </ul>
       </section>
 
       <section className="rounded-2xl bg-white/80 p-6 shadow-sm">
         <h2 className="mb-4 text-lg font-semibold text-[#1a1a1a]">Hoje</h2>
         <ul className="space-y-3">
-          {TODAY_TASKS.map((task) => (
+          {todayTasks.map((task) => (
             <li
               key={task.id}
-              className="flex items-center gap-3 rounded-xl border border-[#e8e8e8] bg-white px-4 py-3"
+              role="button"
+              tabIndex={0}
+              onClick={() => toggleTask(task.id)}
+              onKeyDown={(e) => e.key === "Enter" && toggleTask(task.id)}
+              className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#e8e8e8] bg-white px-4 py-3 transition-colors hover:bg-[#f8f8f8]"
             >
               {task.done ? (
                 <CheckSquare className="size-5 shrink-0 text-[#3b82f6]" />
@@ -115,7 +126,7 @@ export function HomeContent({ userName }: { userName: string }) {
               >
                 {task.title}
               </span>
-              {!task.done && task.isFocus && (
+              {!task.done && task.id === focusNowId && (
                 <Target className="size-5 shrink-0 text-[#6b6b6b]" />
               )}
             </li>
@@ -125,7 +136,7 @@ export function HomeContent({ userName }: { userName: string }) {
           asChild
           className="mt-4 w-full rounded-xl bg-[#1a1a1a] text-white hover:bg-[#333]"
         >
-          <a href="/tarefas">Ver todas</a>
+          <Link href="/tarefas">Ver todas</Link>
         </Button>
       </section>
     </div>

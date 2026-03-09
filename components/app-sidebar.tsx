@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useStackApp } from "@stackframe/stack";
 import { Home, ListTodo, Settings, Plus, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +14,14 @@ const navItems = [
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const app = useStackApp();
+
+  const handleSignOut = async () => {
+    await app.signOut();
+    router.push("/");
+    router.refresh();
+  };
 
   return (
     <aside className="flex w-[72px] shrink-0 flex-col items-center gap-2 rounded-2xl bg-[#1a1a1a] py-4 text-white">
@@ -34,20 +43,21 @@ export function AppSidebar() {
           );
         })}
       </nav>
-      <button
-        type="button"
+      <Link
+        href="/tarefas"
         className="flex size-12 items-center justify-center rounded-xl bg-white/10 text-white hover:bg-white/15"
-        aria-label="Adicionar"
+        aria-label="Adicionar tarefa"
       >
         <Plus className="size-6" />
-      </button>
-      <Link
-        href="/"
+      </Link>
+      <button
+        type="button"
+        onClick={handleSignOut}
         className="mt-auto flex flex-col items-center gap-1 rounded-xl px-3 py-2.5 text-xs font-medium text-white/70 hover:bg-white/10 hover:text-white"
       >
         <LogOut className="size-6" />
         <span>Sair</span>
-      </Link>
+      </button>
     </aside>
   );
 }
