@@ -19,6 +19,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Mind Ease",
   description: "Sua jornada de bem-estar",
+  icons: {
+    icon: "/mindEase-icon-preto.svg",
+  },
 };
 
 export default function RootLayout({

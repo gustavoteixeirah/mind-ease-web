@@ -24,20 +24,22 @@ export function AppSidebar() {
   };
 
   return (
-    <aside className="flex w-[72px] shrink-0 flex-col items-center gap-2 rounded-2xl bg-[#1a1a1a] py-4 text-white">
-      <nav className="flex flex-1 flex-col gap-1">
+    <aside className="flex h-screen w-[72px] shrink-0 flex-col items-center gap-2 overflow-hidden rounded-2xl bg-[#1a1a1a] py-4 text-white" aria-label="Navegação principal">
+      <nav className="min-h-0 flex-1 overflow-y-auto flex flex-col gap-1" aria-label="Menu">
         {navItems.map(({ href, label, icon: Icon }) => {
           const isActive = pathname === href;
           return (
             <Link
               key={href}
               href={href}
+              aria-current={isActive ? "page" : undefined}
+              aria-label={label}
               className={cn(
-                "flex flex-col items-center gap-1 rounded-xl px-3 py-2.5 text-xs font-medium transition-colors",
-                isActive ? "bg-white/15 text-white" : "text-white/70 hover:bg-white/10 hover:text-white"
+                "flex flex-col items-center gap-1 rounded-xl px-3 py-2.5 text-xs font-medium transition-colors shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
+                isActive ? "bg-white/20 text-white shadow-sm" : "text-white/70 hover:bg-white/10 hover:text-white"
               )}
             >
-              <Icon className="size-6" />
+              <Icon className="size-6" aria-hidden="true" />
               <span>{label}</span>
             </Link>
           );
@@ -45,17 +47,18 @@ export function AppSidebar() {
       </nav>
       <Link
         href="/tarefas"
-        className="flex size-12 items-center justify-center rounded-xl bg-white/10 text-white hover:bg-white/15"
+        className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         aria-label="Adicionar tarefa"
       >
-        <Plus className="size-6" />
+        <Plus className="size-6" aria-hidden="true" />
       </Link>
       <button
         type="button"
         onClick={handleSignOut}
-        className="mt-auto flex flex-col items-center gap-1 rounded-xl px-3 py-2.5 text-xs font-medium text-white/70 hover:bg-white/10 hover:text-white"
+        aria-label="Sair da conta"
+        className="flex shrink-0 flex-col items-center gap-1 rounded-xl px-3 py-2.5 text-xs font-medium text-white/70 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
       >
-        <LogOut className="size-6" />
+        <LogOut className="size-6" aria-hidden="true" />
         <span>Sair</span>
       </button>
     </aside>

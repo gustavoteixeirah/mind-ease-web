@@ -11,13 +11,12 @@ export default async function Page() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white p-4">
+    <main className="flex min-h-screen items-center justify-center bg-white p-4 sm:p-6" role="main" aria-label="Página de login MindEase">
       <div className="flex w-full max-w-4xl overflow-hidden rounded-3xl bg-white shadow-xl">
-        {/* Painel esquerdo – imagem */}
-        <div className="relative hidden min-h-[560px] w-[36%] min-w-[280px] overflow-hidden rounded-l-3xl lg:block">
+        <div className="relative hidden min-h-[560px] w-[36%] min-w-[280px] overflow-hidden rounded-l-3xl lg:block" aria-hidden="true">
           <Image
             src="/painel-home.png"
-            alt="Menos pressão. Mais clareza."
+            alt="Ilustração: menos pressão, mais clareza."
             fill
             className="object-cover"
             style={{ objectPosition: "10% center" }}
@@ -25,22 +24,12 @@ export default async function Page() {
             priority
           />
         </div>
-
-        {/* Painel direito – formulário Login / Criar conta */}
-        <div className="flex flex-1 flex-col items-center justify-center bg-[#f0f0f0] px-8 py-12">
+        <div className="flex flex-1 flex-col items-center justify-center bg-[#f0f0f0] px-6 py-10 sm:px-8 sm:py-12" role="region" aria-label="Formulário de acesso">
           <div className="w-full max-w-[380px]">
             <LoginForm />
-            <p className="mt-6 text-center text-sm text-[#6b6b6b]">
-              <a
-                href="/dashboard"
-                className="underline underline-offset-2 hover:text-[#1a1a1a]"
-              >
-                Continuar sem login
-              </a>
-            </p>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

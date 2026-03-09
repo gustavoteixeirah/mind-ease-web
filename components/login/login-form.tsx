@@ -75,12 +75,14 @@ export function LoginForm() {
         />
       </div>
 
-      <div className="mb-8 flex rounded-full bg-[#e0e0e0] p-1">
+      <div className="mb-8 flex rounded-full bg-[#e0e0e0] p-1" role="group" aria-label="Tipo de acesso">
         <button
           type="button"
           onClick={() => setMode("login")}
+          aria-pressed={mode === "login"}
+          aria-label="Entrar com conta existente"
           className={cn(
-            "flex-1 rounded-full py-2.5 text-sm font-medium transition-colors",
+            "flex-1 rounded-full py-2.5 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7eb8da]",
             mode === "login"
               ? "bg-white text-[#1a1a1a] shadow-sm"
               : "text-[#6b6b6b]"
@@ -91,8 +93,10 @@ export function LoginForm() {
         <button
           type="button"
           onClick={() => setMode("signup")}
+          aria-pressed={mode === "signup"}
+          aria-label="Criar nova conta"
           className={cn(
-            "flex-1 rounded-full py-2.5 text-sm font-medium transition-colors",
+            "flex-1 rounded-full py-2.5 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7eb8da]",
             mode === "signup"
               ? "bg-white text-[#1a1a1a] shadow-sm"
               : "text-[#6b6b6b]"
@@ -108,7 +112,7 @@ export function LoginForm() {
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         {error && (
-          <p className="rounded-lg bg-red-100 px-3 py-2 text-sm text-red-700">
+          <p className="rounded-lg bg-red-100 px-3 py-2 text-sm text-red-700" role="alert" aria-live="assertive">
             {error}
           </p>
         )}
@@ -192,7 +196,8 @@ export function LoginForm() {
             <button
               type="button"
               onClick={() => setMode("signup")}
-              className="font-medium text-[#1a1a1a] underline underline-offset-2 hover:opacity-80"
+              aria-label="Ir para criar conta"
+              className="font-medium text-[#1a1a1a] underline underline-offset-2 hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7eb8da] rounded"
             >
               Criar conta
             </button>
@@ -203,7 +208,8 @@ export function LoginForm() {
             <button
               type="button"
               onClick={() => setMode("login")}
-              className="font-medium text-[#1a1a1a] underline underline-offset-2 hover:opacity-80"
+              aria-label="Ir para fazer login"
+              className="font-medium text-[#1a1a1a] underline underline-offset-2 hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7eb8da] rounded"
             >
               Fazer login
             </button>
