@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { stackServerApp } from "@/stack/server";
 import { redirect } from "next/navigation";
-import { LoginForm } from "../components/login/login-form";
+import { LoginForm } from "@/components/login/login-form";
 
 export default async function Page() {
   const user = await stackServerApp.getUser();

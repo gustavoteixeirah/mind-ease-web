@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { StackProvider, StackTheme } from "@stackframe/stack";
-import { stackClientApp } from "../stack/client";
+import { stackClientApp } from "@/stack/client";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 
