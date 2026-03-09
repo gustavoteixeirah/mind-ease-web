@@ -1,12 +1,19 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { PreferencesProvider } from "@/lib/preferences/preferences-context";
 import { TasksProvider } from "@/lib/tasks/tasks-context";
+import { stackServerApp } from "@/stack/server";
+import { redirect } from "next/navigation";
 
-export default function AppLayout({
+export default async function AppLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const user = await stackServerApp.getUser();
+  if (!user) {
+    redirect("/");
+  }
+
   return (
     <TasksProvider>
       <PreferencesProvider>
