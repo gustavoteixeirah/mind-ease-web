@@ -1,5 +1,5 @@
 export type MentalEffort = 'leve' | 'normal' | 'exigente'
-export type WhenOption = 'agora' | 'hoje' | 'amanha' | 'qualquer-dia' | 'especifico'
+export type WhenOption = 'agora' | 'hoje' | 'amanha' | 'qualquer' | 'escolher'
 export type Priority = 'baixa' | 'normal' | 'alta'
 
 export interface Subtask {
@@ -12,15 +12,15 @@ export interface Task {
   id: string
   userId: string
   title: string
-  description: string | null
-  mentalEffort: MentalEffort
-  when: WhenOption
-  scheduledDate: string | null // ISO date string, only set when when === 'specific'
-  priority: Priority
-  timeEstimate: number | null  // em minutos
-  tags: string[]
-  subtasks: Subtask[]
-  completed: boolean
+  when?: WhenOption
+  scheduledDate?: string | null // ISO date string, quando when === 'specific'
+  mentalEffort?: MentalEffort
+  subtasks?: Subtask[]
+  priority?: Priority
+  timeEstimate?: string | null  
+  description?: string | null
+  tags?: string[]
+  completed?: boolean
   createdAt: string // ISO datetime string
 }
 

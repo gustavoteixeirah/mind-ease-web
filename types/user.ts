@@ -18,9 +18,8 @@ export interface UserPreferences {
   pomodoro: PomodoroPreferences
 }
 
-export interface User {
+// Tudo que o app vai armazenar sobre o usuário
+export interface UserRecord {
   id: string
-  name: string
-  email: string
   preferences: UserPreferences
 }
