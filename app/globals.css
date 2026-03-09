@@ -126,6 +126,15 @@
   body {
     @apply bg-background text-foreground;
   }
+  button,
+  [role="button"],
+  a[href],
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"],
+  [tabindex="0"]:not([tabindex="-1"]) {
+    cursor: pointer;
+  }
   /* Acessibilidade: foco visível para navegação por teclado */
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-[var(--mindease-accent,#7eb8da)];
