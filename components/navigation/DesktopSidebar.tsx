@@ -51,7 +51,7 @@ export function DesktopSidebar() {
                 <Icon
                   className="w-5 h-5"
                   strokeWidth={isActive ? 2 : 1.5}
-                  fill={isActive ? "currentColor" : "none"}
+                  // fill={isActive ? "currentColor" : "none"}
                 />
                 <span className="text-[10px] leading-none">{label}</span>
               </Link>

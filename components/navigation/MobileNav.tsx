@@ -37,18 +37,16 @@ export function MobileNav() {
                   "w-5 h-5 transition-colors",
                   isActive
                     ? "text-[#1D1A1A]"
-                    : "text-[#C4C0C1] group-hover:text-[#757373]",
+                    : "text-[#757373] group-hover:text-[#757373]",
                 )}
-                strokeWidth={isActive ? 2 : 1.5}
-                // Filled look for active state
-                fill={isActive ? "currentColor" : "none"}
+                fill={isActive ? "#D9D9D9" : "none"}
               />
               <span
                 className={cn(
                   "text-[10px] transition-colors",
                   isActive
                     ? "text-[#1D1A1A]"
-                    : "text-[#C4C0C1] group-hover:text-[#757373]",
+                    : "text-[#757373] group-hover:text-[#757373]",
                 )}
               >
                 {label}
