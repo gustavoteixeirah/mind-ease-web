@@ -23,6 +23,15 @@ export default function NewTaskModal() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
+  useEffect(() => {
+    if (mounted && isMobile) {
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = "";
+      };
+    }
+  }, [mounted, isMobile]);
+
   const handleSubmit = async (data: NewTask) => {
     await createTask(data);
     router.back();
@@ -39,7 +48,7 @@ export default function NewTaskModal() {
       {isMobile ? (
         <>
           <div
-            className="absolute inset-0 bg-white z-10"
+            className="fixed inset-0 bg-white z-10 overflow-y-auto"
             style={{
               backgroundColor: "var(--background)",
               backgroundImage:

@@ -25,6 +25,16 @@ export default function TaskDetailsModal() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
+  // Evita scroll do body no mobile quando modal aberto
+  useEffect(() => {
+    if (mounted && isMobile) {
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = "";
+      };
+    }
+  }, [mounted, isMobile]);
+
   const handleSubmit = async (data: NewTask) => {
     await updateTask(task.id, data);
     router.back();
@@ -40,7 +50,7 @@ export default function TaskDetailsModal() {
       {isMobile ? (
         <>
           <div
-            className="absolute inset-0 bg-white z-10"
+            className="fixed inset-0 bg-white z-10 overflow-y-auto"
             style={{
               backgroundColor: "var(--background)",
               backgroundImage:
