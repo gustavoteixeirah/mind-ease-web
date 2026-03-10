@@ -140,7 +140,7 @@
   }
   body {
     @apply text-foreground;
-    background-color: var(--background);
+    background-color: #f3f3f3;
     background-image: radial-gradient(
       circle at top left,
       rgb(var(--user-theme) / 0.5) 0%,

@@ -45,7 +45,7 @@ export default function TasksPage() {
             id="details-toggle"
             checked={detailsVisible}
             onCheckedChange={setDetailsVisible}
-            className="hover:cursor-pointer"
+            className="hover:cursor-pointer shadow"
           />
           <Label
             htmlFor="details-toggle"
