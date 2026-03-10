@@ -13,6 +13,16 @@ const fontSizeMap = {
   acessivel: { label: "16px", body: "18px", title: "32px" },
 };
 
+function ThemeApplier() {
+  const { preferences } = useUser();
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", preferences.colorTheme);
+  }, [preferences.colorTheme]);
+
+  return null;
+}
+
 function FontSizeApplier() {
   const { preferences } = useUser();
 
@@ -36,6 +46,7 @@ export function ClientProviders({ userId, children }: ClientProvidersProps) {
   return (
     <UserProvider userId={userId}>
       <FontSizeApplier />
+      <ThemeApplier />
       <TaskProvider>
         <FocusProvider>{children}</FocusProvider>
       </TaskProvider>

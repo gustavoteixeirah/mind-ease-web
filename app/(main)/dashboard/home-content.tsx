@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Target, Leaf, CheckSquare, Circle } from "lucide-react";
+import { Target, Leaf, Info, Circle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTasks } from "@/lib/tasks/tasks-context";
 import { cn } from "@/lib/utils";
@@ -13,6 +13,11 @@ import { RadioButton } from "@/components/ui/radio-button";
 import { useUser } from "@/presentation/context/UserContext";
 import { useTask } from "@/presentation/context/TaskContext";
 import { TaskCard } from "@/components/tasks/TaskCard";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type EnergyState = "calmo" | "presente" | "focado";
 
@@ -99,12 +104,29 @@ export function HomeContent() {
           role="group"
           aria-label="Como está sua energia agora?"
         >
-          <p
-            className="font-normal text-[#1a1a1a]"
-            style={{ fontSize: "var(--body-font-size)" }}
-          >
-            Como está sua energia agora?
-          </p>
+          <div className="flex flex-row">
+            <p
+              className="font-normal text-[#1a1a1a]"
+              style={{ fontSize: "var(--body-font-size)" }}
+            >
+              Como está sua energia agora?
+            </p>
+            <Tooltip>
+              <TooltipTrigger>
+                <Info className="h-3 text-[#757373]" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p
+                  className="font-atkinson"
+                  style={{ fontSize: "var(--label-font-size)" }}
+                >
+                  Usamos isso para sugerir tarefas mais compatíveis com seu
+                  ritmo.
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+
           <div
             className="flex flex-wrap gap-2"
             role="group"
@@ -202,12 +224,14 @@ export function HomeContent() {
                   );
                 })()}
 
-                <Button
-                  asChild
-                  className="mt-4 w-full rounded-xl bg-[#1D1A1A] text-white hover:bg-[#333]"
-                >
-                  <Link href="/tarefas">Ver todas</Link>
-                </Button>
+                {todayTasks.length > 0 && (
+                  <Button
+                    asChild
+                    className="mt-4 w-full rounded-xl bg-[#1D1A1A] text-white hover:bg-[#333] font-atkinson"
+                  >
+                    <Link href="/tasks">Ver todas</Link>
+                  </Button>
+                )}
               </section>
             </>
           )}

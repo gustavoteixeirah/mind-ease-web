@@ -7,6 +7,8 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import HeaderSimple from "@/components/ui/header-simple";
+import { useUser } from "@/presentation/context/UserContext";
+import { EnergyLevel, MentalEffort } from "@/types";
 
 export default function TasksPage() {
   const {
@@ -22,8 +24,20 @@ export default function TasksPage() {
     tasksByEffort.normal.length > 0 ||
     tasksByEffort.exigente.length > 0;
 
+  const { todayEnergy } = useUser();
+
+  const effortOrder: Record<EnergyLevel, MentalEffort[]> = {
+    calmo: ["leve", "normal", "exigente"],
+    presente: ["normal", "exigente", "leve"],
+    focado: ["exigente", "normal", "leve"],
+  };
+
+  const orderedEfforts: MentalEffort[] = todayEnergy
+    ? effortOrder[todayEnergy]
+    : ["leve", "normal", "exigente"];
+
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex h-full flex-col gap-4 w-full">
       {/* Header */}
       <HeaderSimple title="Suas tarefas">
         <div className="flex items-center gap-2">
@@ -78,24 +92,15 @@ export default function TasksPage() {
           {/* Task groups */}
           {!isLoading && hasAnyTasks && (
             <div className="flex flex-col gap-12">
-              <TaskGroup
-                effort="leve"
-                tasks={tasksByEffort.leve}
-                detailed={detailsVisible}
-                viewedDate={viewedDate}
-              />
-              <TaskGroup
-                effort="normal"
-                tasks={tasksByEffort.normal}
-                detailed={detailsVisible}
-                viewedDate={viewedDate}
-              />
-              <TaskGroup
-                effort="exigente"
-                tasks={tasksByEffort.exigente}
-                detailed={detailsVisible}
-                viewedDate={viewedDate}
-              />
+              {orderedEfforts.map((effort) => (
+                <TaskGroup
+                  key={effort}
+                  effort={effort}
+                  tasks={tasksByEffort[effort]}
+                  detailed={detailsVisible}
+                  viewedDate={viewedDate}
+                />
+              ))}
             </div>
           )}
         </div>

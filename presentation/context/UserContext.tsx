@@ -64,10 +64,10 @@ export function UserProvider({ children, userId }: UserProviderProps) {
         setPreferences(userRecord.preferences);
 
         // Load today's energy separately
-        const today = new Date().toISOString().split("T")[0];
-        const energyRes = await fetch(`/api/energy?date=${today}`);
-        const energyData = await energyRes.json();
-        setTodayEnergyState(energyData.level ?? null);
+        // const today = new Date().toISOString().split("T")[0];
+        // const energyRes = await fetch(`/api/energy?date=${today}`);
+        // const energyData = await energyRes.json();
+        // setTodayEnergyState(energyData.level ?? null);
       } catch (err) {
         console.error("Failed to initialize user:", err);
       } finally {
@@ -78,24 +78,27 @@ export function UserProvider({ children, userId }: UserProviderProps) {
     init();
   }, [userId]);
 
-  const setTodayEnergy = useCallback(
-    async (level: EnergyLevel) => {
-      if (!userId) return;
+  // const setTodayEnergy = useCallback(
+  //   async (level: EnergyLevel) => {
+  //     if (!userId) return;
 
-      // Optimistic update
-      setTodayEnergyState(level);
+  //     // Optimistic update
+  //     setTodayEnergyState(level);
 
-      const today = new Date().toISOString().split("T")[0];
+  //     const today = new Date().toISOString().split("T")[0];
 
-      await fetch("/api/energy", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ date: today, level }),
-        // userId comes from Stack Auth server-side, not from the body
-      });
-    },
-    [userId],
-  );
+  //     await fetch("/api/energy", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ date: today, level }),
+  //       // userId comes from Stack Auth server-side, not from the body
+  //     });
+  //   },
+  //   [userId],
+  // );
+  const setTodayEnergy = useCallback((level: EnergyLevel) => {
+    setTodayEnergyState(level);
+  }, []);
 
   const updatePreferences = useCallback(
     async (partial: Partial<UserPreferences>) => {

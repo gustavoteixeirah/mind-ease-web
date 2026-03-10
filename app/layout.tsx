@@ -7,6 +7,7 @@ import "./globals.css";
 import { AppProviders } from "@/presentation/providers";
 import { Toaster } from "sonner";
 import { cn } from "@/lib/utils";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -63,7 +64,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      data-theme="blue"
+      data-theme="default"
       className={`${inter.variable} ${atkinson.variable}`}
     >
       <body
@@ -75,10 +76,12 @@ export default function RootLayout({
         <StackProvider app={stackClientApp} lang="pt-BR">
           <StackTheme>
             <AppProviders>
-              {/* <FocusPanelWrapper />
+              <TooltipProvider>
+                {/* <FocusPanelWrapper />
               <AppNav /> */}
-              {children}
-              {/* {modal} */}
+                {children}
+                {/* {modal} */}
+              </TooltipProvider>
               <Toaster richColors position="top-right" />
             </AppProviders>
           </StackTheme>

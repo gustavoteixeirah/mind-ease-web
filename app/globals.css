@@ -151,31 +151,31 @@
 }
 
 /* Temas de usuário */
-[data-theme="blue"] {
+[data-theme="default"] {
   --user-theme: 203 228 247;
 }
 
-[data-theme="purple"] {
+[data-theme="roxo"] {
   --user-theme: 216 209 245;
 }
 
-[data-theme="pink"] {
+[data-theme="rosa"] {
   --user-theme: 236 190 213;
 }
 
-[data-theme="yellow"] {
+[data-theme="amarelo"] {
   --user-theme: 248 238 207;
 }
 
-[data-theme="orange"] {
+[data-theme="laranja"] {
   --user-theme: 250 213 190;
 }
 
-[data-theme="green"] {
+[data-theme="verde"] {
   --user-theme: 182 223 206;
 }
 
-[data-theme="gray"] {
+[data-theme="cinza"] {
   --user-theme: 221 217 218;
 }
 
