@@ -5,7 +5,8 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { AppProviders } from "@/presentation/providers";
-import { Toaster } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
+import { ToasterWrapper } from "@/components/ui/toaster-wrapper";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
@@ -82,7 +83,7 @@ export default function RootLayout({
                 {children}
                 {/* {modal} */}
               </TooltipProvider>
-              <Toaster richColors position="top-right" />
+              <ToasterWrapper />
             </AppProviders>
           </StackTheme>
         </StackProvider>
