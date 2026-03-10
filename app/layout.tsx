@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { StackProvider, StackTheme } from "@stackframe/stack";
-import { stackClientApp } from "../stack/client";
+import { stackClientApp } from "@/stack/client";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -25,22 +25,22 @@ const geistMono = Geist_Mono({
 const atkinson = localFont({
   src: [
     {
-      path: "./fonts/AtkinsonHyperlegible-Regular.ttf",
+      path: "/fonts/AtkinsonHyperlegible-Regular.ttf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./fonts/AtkinsonHyperlegible-Bold.ttf",
+      path: "/fonts/AtkinsonHyperlegible-Bold.ttf",
       weight: "700",
       style: "normal",
     },
     {
-      path: "./fonts/AtkinsonHyperlegible-Italic.ttf",
+      path: "/fonts/AtkinsonHyperlegible-Italic.ttf",
       weight: "400",
       style: "italic",
     },
     {
-      path: "./fonts/AtkinsonHyperlegible-BoldItalic.ttf",
+      path: "/fonts/AtkinsonHyperlegible-BoldItalic.ttf",
       weight: "700",
       style: "italic",
     },
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   title: "Mind Ease",
   description: "Sua jornada de bem-estar",
   icons: {
-    icon: "/mindease-icon-preto.svg",
+    icon: "/mindEase-icon-preto.svg",
   },
 };
 
@@ -68,11 +68,12 @@ export default function RootLayout({
     <html
       lang="pt-BR"
       data-theme="blue"
+      user-font="conforto"
       className={`${inter.variable} ${atkinson.variable}`}
     >
       <body
         className={cn(
-          `${geistSans.variable} ${geistMono.variable} antialiased`,
+          `${geistSans.variable} ${geistMono.variable} ${atkinson.variable} antialiased`,
           "md:flex md:flex-row-reverse md:p-10 md:pl-30 md:gap-3 md:h-screen md:overflow-hidden",
         )}
       >

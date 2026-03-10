@@ -4,6 +4,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@layer utilities {
+  .font-atkinson {
+    font-family: var(--font-atkinson), sans-serif;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -50,6 +56,12 @@
 
 :root {
   --background: #f7f7f7;
+  /* Vini */
+  --mindease-accent: #7eb8da;
+  --mindease-base-font-size: 16px;
+  font-size: var(--mindease-base-font-size);
+  /* ------ */
+  --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -138,6 +150,72 @@
   }
 }
 
+/* Temas de usuário */
 [data-theme="blue"] {
   --user-theme: 203 228 247;
+}
+
+[data-theme="purple"] {
+  --user-theme: 216 209 245;
+}
+
+[data-theme="pink"] {
+  --user-theme: 236 190 213;
+}
+
+[data-theme="yellow"] {
+  --user-theme: 248 238 207;
+}
+
+[data-theme="orange"] {
+  --user-theme: 250 213 190;
+}
+
+[data-theme="green"] {
+  --user-theme: 182 223 206;
+}
+
+[data-theme="gray"] {
+  --user-theme: 221 217 218;
+}
+
+/* Preferência de tamanho de fontes */
+[user-font="compacto"] {
+  --label-font-size: 13px;
+  --body-font-size: 14px;
+  --title-font-size: 24px;
+}
+
+[user-font="conforto"] {
+  --label-font-size: 14px;
+  --body-font-size: 16px;
+  --title-font-size: 26px;
+}
+
+[user-font="acessivel"] {
+  --label-font-size: 16px;
+  --body-font-size: 18px;
+  --title-font-size: 32px;
+}
+
+button,
+[role="button"],
+a[href],
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+[tabindex="0"]:not([tabindex="-1"]) {
+  cursor: pointer;
+}
+/* Acessibilidade: foco visível para navegação por teclado */
+:focus-visible {
+  @apply outline-2 outline-offset-2 outline-[var(--mindease-accent,#7eb8da)];
+}
+
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+[tabindex="0"]:focus-visible {
+  @apply outline-2 outline-offset-2 outline-[var(--mindease-accent,#7eb8da)];
 }

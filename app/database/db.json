@@ -157,6 +157,51 @@
       "completed": false,
       "createdAt": "2026-03-10T01:11:35.716Z",
       "priority": "baixa"
+    },
+    {
+      "id": "b2346c2e-a2a8-48b1-b1c5-8b888226640f",
+      "userId": "54baf402-c606-4fcf-8617-304e1cfb4d01",
+      "title": "Últimos detalhes",
+      "description": "",
+      "mentalEffort": "exigente",
+      "when": "hoje",
+      "scheduledDate": null,
+      "timeEstimate": "",
+      "tags": [],
+      "subtasks": [],
+      "completed": false,
+      "createdAt": "2026-03-10T11:37:08.831Z"
+    },
+    {
+      "id": "eddda1f4-6ee1-4a3a-9008-b459ef795214",
+      "userId": "54baf402-c606-4fcf-8617-304e1cfb4d01",
+      "title": "Outra coisa",
+      "description": "",
+      "mentalEffort": "exigente",
+      "when": "hoje",
+      "scheduledDate": null,
+      "priority": "alta",
+      "timeEstimate": "",
+      "tags": [],
+      "subtasks": [
+        {
+          "id": "c46d8cb8-4420-472e-8998-5dc358ffcdc3",
+          "text": "Mais coisas",
+          "completed": false
+        },
+        {
+          "id": "b7fe21e4-c60f-4550-8d81-8a05cb9a1052",
+          "text": "Não sei",
+          "completed": false
+        },
+        {
+          "id": "26094658-b3fd-486f-9066-0bb47e2f699b",
+          "text": "Algo",
+          "completed": false
+        }
+      ],
+      "completed": false,
+      "createdAt": "2026-03-10T11:37:54.976Z"
     }
   ],
   "users": [

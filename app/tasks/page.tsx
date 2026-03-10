@@ -35,7 +35,7 @@ export default function TasksPage() {
           />
           <Label
             htmlFor="details-toggle"
-            className="text-sm text-[#757373] cursor-pointer"
+            className="text-sm text-[#757373] cursor-pointer font-atkinson"
           >
             Ver detalhes
           </Label>
