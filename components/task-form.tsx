@@ -202,7 +202,8 @@ export default function TaskForm({
                 className={cn(
                   "flex-1 py-2 px-4 rounded-full border text-sm text-center flex items-center gap-1 justify-center transition-all duration-200 text-[#1D1A1A]",
                   "border-border bg-[#F7F7F7]",
-                  "shadow-[0_1px_3px_0_rgba(0,0,0,0.2)]",
+                  "shadow-[0_1px_3px_0_rgba(0,0,0,0.1)]",
+                  "hover:border-[#1D1A1A] hover:cursor-pointer",
                   when === "escolher" &&
                     scheduledDate &&
                     "bg-[rgb(var(--user-theme))]",
