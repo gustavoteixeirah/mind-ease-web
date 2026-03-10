@@ -9,25 +9,19 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { NewTask } from "@/types/task";
 import ModalPanel from "@/components/tasks/ModalPanel";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import HeaderBackButton from "@/components/ui/header-back-button";
 
 export default function NewTaskModal() {
   const router = useRouter();
   const { createTask } = useTask();
   const { startFocus } = useFocus();
-  // Read window width synchronously so there's no flash
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const isMobile = useIsMobile();
 
-  useEffect(() => {
-    const mobile = window.innerWidth < 768;
-    setIsMobile(mobile);
-    if (mobile) {
-      // Replace so back button works correctly
-      router.replace("/new-task");
-    }
-  }, []); // ← runs once on mount, no deps
-
-  // null = not yet measured, render nothing to avoid flash
-  if (isMobile === null || isMobile) return null;
+  // Checa se está no mobile ou desktop para evitar problemas de mismatch no SSR
+  // useIsMobile inicialmente retorna false
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const handleSubmit = async (data: NewTask) => {
     await createTask(data);
@@ -37,101 +31,56 @@ export default function NewTaskModal() {
   const handleSubmitWithFocus = async (data: NewTask) => {
     const created = await createTask(data);
     startFocus(created, { path: "/home", viewedDate: null });
-
-    if (isMobile) {
-      router.push("/focus");
-    } else {
-      // router.push("/dashboard");
-      router.back();
-    }
+    router.back();
   };
 
   return (
     <>
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
-        onClick={() => router.back()}
-      />
-
-      {/* Modal panel */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
-        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto pointer-events-auto">
-          {/* Header */}
-          <ModalPanel onClose={() => router.back()} mode="create" />
-
-          {/* Form */}
-          <div className="px-6 pb-6">
-            <TaskForm
-              mode="create"
-              onSubmit={handleSubmit}
-              onSubmitWithFocus={handleSubmitWithFocus}
-            />
+      {isMobile ? (
+        <>
+          <div
+            className="absolute inset-0 bg-white z-10"
+            style={{
+              backgroundColor: "var(--background)",
+              backgroundImage:
+                "radial-gradient(circle at top left, rgb(var(--user-theme) / 0.5) 0%, transparent 60%)",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <HeaderBackButton title="Criar nova tarefa" />
+            <Card className="p-6 pt-10 pb-25">
+              <TaskForm
+                mode="create"
+                onSubmit={handleSubmit}
+                onSubmitWithFocus={handleSubmitWithFocus}
+              />
+            </Card>
           </div>
-        </div>
-      </div>
+        </>
+      ) : (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+            onClick={() => router.back()}
+          />
+          {/* Modal */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] pointer-events-auto flex flex-col">
+              {/* Header */}
+              <ModalPanel onClose={() => router.back()} mode="create" />
+              {/* Form */}
+              <div className="flex-1 min-h-0 px-6 pb-6 overflow-y-auto scroll-smooth">
+                <TaskForm
+                  mode="create"
+                  onSubmit={handleSubmit}
+                  onSubmitWithFocus={handleSubmitWithFocus}
+                />
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }
-
-// "use client";
-
-// import { useRouter } from "next/navigation";
-// import TaskForm from "@/components/task-form";
-// import { useTask } from "@/presentation/context/TaskContext";
-// import { useFocus } from "@/presentation/context/FocusContext";
-// import { NewTask } from "@/types/task";
-// import ModalPanel from "@/components/tasks/ModalPanel";
-
-// export default function NewTaskModal() {
-//   const router = useRouter();
-//   const { createTask } = useTask();
-//   const { startFocus } = useFocus();
-
-//   const handleSubmit = async (data: NewTask) => {
-//     await createTask(data);
-//     router.back();
-//   };
-
-//   const handleSubmitWithFocus = async (data: NewTask) => {
-//     const created = await createTask(data);
-//     startFocus(created, { path: "/home", viewedDate: null });
-//     router.back();
-//   };
-
-//   // On mobile: render the form directly, full page, no modal chrome
-//   // On desktop: render with backdrop + modal panel
-//   return (
-//     <>
-//       {/* Backdrop — hidden on mobile, visible on desktop */}
-//       <div
-//         className="hidden md:block fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
-//         onClick={() => router.back()}
-//       />
-
-//       {/* On mobile: full page layout */}
-//       <div className="md:hidden min-h-screen bg-white px-4 py-6">
-//         <ModalPanel onClose={() => router.back()} mode="create" />
-//         <TaskForm
-//           mode="create"
-//           onSubmit={handleSubmit}
-//           onSubmitWithFocus={handleSubmitWithFocus}
-//         />
-//       </div>
-
-//       {/* On desktop: centered modal */}
-//       <div className="hidden md:flex fixed inset-0 z-50 items-center justify-center p-4 pointer-events-none">
-//         <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto pointer-events-auto">
-//           <ModalPanel onClose={() => router.back()} mode="create" />
-//           <div className="px-6 pb-6">
-//             <TaskForm
-//               mode="create"
-//               onSubmit={handleSubmit}
-//               onSubmitWithFocus={handleSubmitWithFocus}
-//             />
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
