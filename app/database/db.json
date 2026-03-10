@@ -1,0 +1,177 @@
+{
+  "tasks": [
+    {
+      "id": "01a472d5-30d3-4280-89af-0f67158262df",
+      "userId": "54baf402-c606-4fcf-8617-304e1cfb4d01",
+      "title": "Tarefa",
+      "description": "",
+      "scheduledDate": null,
+      "timeEstimate": "",
+      "tags": [],
+      "subtasks": [],
+      "completed": false,
+      "createdAt": "2026-03-06T22:05:33.696Z"
+    },
+    {
+      "id": "93949a9b-3031-4fc0-8e8c-7918db7930ff",
+      "userId": "54baf402-c606-4fcf-8617-304e1cfb4d01",
+      "title": "Outra coisa",
+      "description": "",
+      "mentalEffort": "leve",
+      "when": "escolher",
+      "scheduledDate": "2026-03-11",
+      "timeEstimate": "",
+      "tags": [
+        "Educação"
+      ],
+      "subtasks": [
+        {
+          "id": "8198b4eb-a7e1-406d-85c0-843cca44779b",
+          "text": "Alguma coisa",
+          "completed": false
+        }
+      ],
+      "completed": false,
+      "createdAt": "2026-03-06T22:06:19.333Z"
+    },
+    {
+      "id": "dce0f8c7-49a9-49a0-9198-c7276e26d2bd",
+      "userId": "54baf402-c606-4fcf-8617-304e1cfb4d01",
+      "title": "Terminar projeto",
+      "description": "Precisa melioras",
+      "mentalEffort": "exigente",
+      "when": "hoje",
+      "scheduledDate": null,
+      "priority": "normal",
+      "timeEstimate": "1h",
+      "tags": [
+        "educação",
+        "projetos"
+      ],
+      "subtasks": [
+        {
+          "id": "a3127a58-fea0-4510-9d93-2360734a1727",
+          "text": "Fazer todo",
+          "completed": true
+        },
+        {
+          "id": "8f52af0c-bb3f-4f84-b6c0-1d3c8c8c749b",
+          "text": "Fazer focus",
+          "completed": false
+        }
+      ],
+      "completed": true,
+      "createdAt": "2026-03-06T22:34:42.449Z"
+    },
+    {
+      "id": "a3c41980-e916-4e02-a8da-e5b0e6ad726d",
+      "userId": "54baf402-c606-4fcf-8617-304e1cfb4d01",
+      "title": "Comer ",
+      "description": "",
+      "mentalEffort": "normal",
+      "when": "agora",
+      "scheduledDate": null,
+      "priority": "baixa",
+      "timeEstimate": "",
+      "tags": [
+        "janta"
+      ],
+      "subtasks": [
+        {
+          "id": "419072f5-d7f7-42d2-b664-9755846a9977",
+          "text": "Fazer comid",
+          "completed": true
+        }
+      ],
+      "completed": false,
+      "createdAt": "2026-03-06T22:50:09.098Z"
+    },
+    {
+      "id": "529c0d10-cf26-4d2d-807c-752e21bac1cb",
+      "userId": "54baf402-c606-4fcf-8617-304e1cfb4d01",
+      "title": "Estudar",
+      "description": "",
+      "when": "hoje",
+      "scheduledDate": null,
+      "priority": "normal",
+      "timeEstimate": "2h",
+      "tags": [],
+      "subtasks": [],
+      "completed": false,
+      "createdAt": "2026-03-09T14:36:04.793Z"
+    },
+    {
+      "id": "0ec7680f-04e4-43ef-9425-9143616e76d4",
+      "userId": "54baf402-c606-4fcf-8617-304e1cfb4d01",
+      "title": "Praticar",
+      "description": "Alguma coisa",
+      "mentalEffort": "leve",
+      "when": "amanha",
+      "scheduledDate": null,
+      "priority": "normal",
+      "timeEstimate": "",
+      "tags": [
+        "tags"
+      ],
+      "subtasks": [
+        {
+          "id": "d761a43c-cd6a-4d42-9fd9-cddb32b9e2dc",
+          "text": "Estudar",
+          "completed": false
+        },
+        {
+          "id": "23bf1374-5598-41a4-b37a-c8b7eb7fe911",
+          "text": "Escrever dissertação",
+          "completed": false
+        }
+      ],
+      "completed": false,
+      "createdAt": "2026-03-09T15:13:15.361Z"
+    },
+    {
+      "id": "1dc96865-aacb-4aa2-aca2-4121f40441b9",
+      "userId": "54baf402-c606-4fcf-8617-304e1cfb4d01",
+      "title": "Jantar",
+      "description": "",
+      "mentalEffort": "normal",
+      "when": "hoje",
+      "scheduledDate": null,
+      "priority": "normal",
+      "timeEstimate": "",
+      "tags": [],
+      "subtasks": [],
+      "completed": true,
+      "createdAt": "2026-03-09T15:17:23.279Z"
+    },
+    {
+      "id": "2ebd404c-cbc2-4274-98cf-ebf6271e7476",
+      "userId": "54baf402-c606-4fcf-8617-304e1cfb4d01",
+      "title": "Teste 2",
+      "description": "",
+      "mentalEffort": "leve",
+      "when": "agora",
+      "scheduledDate": null,
+      "timeEstimate": "",
+      "tags": [],
+      "subtasks": [],
+      "completed": false,
+      "createdAt": "2026-03-10T01:11:35.716Z",
+      "priority": "baixa"
+    }
+  ],
+  "users": [
+    {
+      "id": "54baf402-c606-4fcf-8617-304e1cfb4d01",
+      "preferences": {
+        "textSize": "conforto",
+        "colorTheme": "default",
+        "pomodoro": {
+          "focusMinutes": 25,
+          "shortBreakMinutes": 5,
+          "longBreakMinutes": 15,
+          "totalCycles": 4
+        }
+      }
+    }
+  ]
+}
