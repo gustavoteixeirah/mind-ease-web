@@ -310,7 +310,7 @@ mind-ease-web/
 ## 🚀 Instalação e Configuração
 
 ### Pré-requisitos
-- Node.js 18+
+- Node.js 20+
 - npm ou yarn
 - Conta configurada na Stack Auth
 
