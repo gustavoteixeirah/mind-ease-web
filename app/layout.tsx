@@ -5,6 +5,10 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { AppProviders } from "@/presentation/providers";
+import { Toaster } from "sonner";
+import { FocusPanelWrapper } from "@/components/foco/FocusPanelWrapper";
+import { AppNav } from "@/components/navigation/AppNav";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -48,12 +52,17 @@ const atkinson = localFont({
 export const metadata: Metadata = {
   title: "Mind Ease",
   description: "Sua jornada de bem-estar",
+  icons: {
+    icon: "/mindease-icon-preto.svg",
+  },
 };
 
 export default function RootLayout({
   children,
+  modal, // Next.js vai injetar o @modal aqui
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html
@@ -62,11 +71,20 @@ export default function RootLayout({
       className={`${inter.variable} ${atkinson.variable}`}
     >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={cn(
+          `${geistSans.variable} ${geistMono.variable} antialiased`,
+          "md:flex md:flex-row-reverse md:p-10 md:pl-30 md:gap-3",
+        )}
       >
         <StackProvider app={stackClientApp} lang="pt-BR">
           <StackTheme>
-            <AppProviders>{children}</AppProviders>
+            <AppProviders>
+              <FocusPanelWrapper />
+              <AppNav />
+              {children}
+              {modal}
+              <Toaster richColors position="top-right" />
+            </AppProviders>
           </StackTheme>
         </StackProvider>
       </body>
