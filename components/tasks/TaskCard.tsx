@@ -63,7 +63,8 @@ export function TaskCard({
           {task.tags.map((tag) => (
             <span
               key={tag}
-              className="text-xs px-2.5 py-0.5 rounded-[3px] bg-[#F2EFF0] text-[#757373]"
+              className="px-2.5 py-0.5 rounded-[3px] bg-[#F2EFF0] text-[#757373] font-atkinson"
+              style={{ fontSize: "var(--label-font-size)" }}
             >
               {tag}
             </span>
@@ -112,9 +113,10 @@ export function TaskCard({
         {/* Title */}
         <span
           className={cn(
-            "flex-1 text-sm leading-snug",
+            "flex-1 leading-snug",
             task.completed ? "line-through text-[#C4C0C1]" : "text-[#1D1A1A]",
           )}
+          style={{ fontSize: "var(--body-font-size)" }}
           onClick={handleTaskDetails}
         >
           {task.title}
@@ -139,11 +141,19 @@ export function TaskCard({
       {/* Detalhado: prioridade + estimativa */}
       {detailed && (task.priority || task.timeEstimate) && (
         <div className="flex items-center justify-between px-4 pb-3 -mt-1">
-          <span className="text-xs text-[#757373] capitalize">
+          <span
+            className="text-[#757373] capitalize font-atkinson"
+            style={{ fontSize: "var(--label-font-size)" }}
+          >
             {task.priority ?? ""}
           </span>
           {task.timeEstimate && (
-            <span className="text-xs text-[#757373]">{task.timeEstimate}</span>
+            <span
+              className="text-[#757373] font-atkinson"
+              style={{ fontSize: "var(--label-font-size)" }}
+            >
+              {task.timeEstimate}
+            </span>
           )}
         </div>
       )}

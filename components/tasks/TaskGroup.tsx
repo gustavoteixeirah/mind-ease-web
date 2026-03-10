@@ -29,11 +29,19 @@ export function TaskGroup({
     <div className="flex flex-col gap-4">
       {/* Esforço + Contagem (detalhada) */}
       <div className="flex items-center gap-2">
-        <span className="text-sm text-[#1D1A1A] bg-[#F2EFF0] rounded-full px-5 py-[5px]">
+        <span
+          className="text-[#1D1A1A] bg-[#F2EFF0] rounded-full px-5 py-[5px] font-atkinson"
+          style={{ fontSize: "var(--label-font-size)" }}
+        >
           {effortLabel[effort]}
         </span>
         {detailed && (
-          <span className="text-xs text-[#757373]">({tasks.length})</span>
+          <span
+            className="text-[#757373] font-atkinson"
+            style={{ fontSize: "var(--label-font-size)" }}
+          >
+            ({tasks.length})
+          </span>
         )}
       </div>
 

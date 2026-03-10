@@ -59,7 +59,10 @@ export function DateNavigator() {
         </button>
 
         {/* Date label */}
-        <h2 className="text-lg font-medium text-[#1D1A1A]">
+        <h2
+          className="font-atkinson text-[#1D1A1A]"
+          style={{ fontSize: "var(--title-font-size)" }}
+        >
           {formatDateLabel(viewedDate)}
         </h2>
       </div>

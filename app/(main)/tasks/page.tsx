@@ -35,7 +35,8 @@ export default function TasksPage() {
           />
           <Label
             htmlFor="details-toggle"
-            className="text-sm text-[#757373] cursor-pointer font-atkinson"
+            className="text-[#757373] cursor-pointer"
+            style={{ fontSize: "var(--label-font-size)" }}
           >
             Ver detalhes
           </Label>
@@ -43,7 +44,7 @@ export default function TasksPage() {
       </HeaderSimple>
 
       {/* Task list card */}
-      <Card className="flex flex-col h-full gap-6 pb-28 md:pb-8 md:gap-10">
+      <Card className="flex flex-col h-full gap-4 pb-28 md:pb-8 md:gap-10">
         {/* Navegador de datas */}
         <div className="p-4 md:px-6 md:pb-0">
           <DateNavigator />

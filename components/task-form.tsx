@@ -150,20 +150,32 @@ export default function TaskForm({
     <div className="flex flex-col gap-10">
       {/* Titulo tarefa */}
       <div className="flex flex-col gap-2">
-        <Label htmlFor="nome-tarefa">Tarefa*</Label>
+        <Label
+          htmlFor="nome-tarefa"
+          style={{ fontSize: "var(--body-font-size)" }}
+          className="font-normal"
+        >
+          Tarefa*
+        </Label>
         <Input
           id="nome-tarefa"
           placeholder="O que precisa ser feito?"
           maxLength={100}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="placeholder:text-muted-foreground placeholder:text-sm"
+          className="placeholder:text-muted-foreground placeholder:text-sm placeholder:font-atkinson"
         />
       </div>
 
       {/* Para quando isso deve ser feito? */}
       <div className="flex flex-col gap-2">
-        <Label htmlFor="when">Para quando isso deve ser feito?</Label>
+        <Label
+          htmlFor="when"
+          style={{ fontSize: "var(--body-font-size)" }}
+          className="font-normal"
+        >
+          Para quando isso deve ser feito?
+        </Label>
         <div className="flex gap-3 justify-between flex-wrap">
           <RadioButton
             id="agora"
@@ -200,7 +212,7 @@ export default function TaskForm({
               <button
                 type="button"
                 className={cn(
-                  "flex-1 py-2 px-4 rounded-full border text-sm text-center flex items-center gap-1 justify-center transition-all duration-200 text-[#1D1A1A]",
+                  "flex-1 py-2 px-4 rounded-full border text-sm text-center flex items-center gap-1 justify-center transition-all duration-200 text-[#1D1A1A] font-atkinson",
                   "border-border bg-[#F7F7F7]",
                   "shadow-[0_1px_3px_0_rgba(0,0,0,0.1)]",
                   "hover:border-[#1D1A1A] hover:cursor-pointer",
@@ -208,6 +220,7 @@ export default function TaskForm({
                     scheduledDate &&
                     "bg-[rgb(var(--user-theme))]",
                 )}
+                style={{ fontSize: "var(--label-font-size)" }}
               >
                 {scheduledDate && when === "escolher"
                   ? new Date(scheduledDate + "T00:00:00").toLocaleDateString(
@@ -241,7 +254,13 @@ export default function TaskForm({
 
       {/* Esforço mental */}
       <div className="flex flex-col gap-2">
-        <Label htmlFor="esforco">Esforço mental</Label>
+        <Label
+          htmlFor="esforco"
+          style={{ fontSize: "var(--body-font-size)" }}
+          className="font-normal"
+        >
+          Esforço mental
+        </Label>
         <div className="flex gap-3 justify-between flex-wrap">
           <RadioButton
             id="leve"
@@ -276,7 +295,8 @@ export default function TaskForm({
       {/* Sub-tarefas */}
       <div className="flex flex-col gap-2">
         <button
-          className="underline text-left w-fit hover:cursor-pointer hover:text-[#757373]"
+          className="underline text-left w-fit font-normal hover:cursor-pointer hover:text-[#757373]"
+          style={{ fontSize: "var(--body-font-size)" }}
           onClick={() => setIsAddingSubTask(true)}
         >
           + Criar sub-tarefa
@@ -321,7 +341,12 @@ export default function TaskForm({
           className="flex items-center justify-between cursor-pointer"
           onClick={() => setIsDetailsOpen((prev) => !prev)}
         >
-          <h2 className="text-[#1D1A1A]">Mais detalhes</h2>
+          <h2
+            className="text-[#1D1A1A]"
+            style={{ fontSize: "var(--body-font-size)" }}
+          >
+            Mais detalhes
+          </h2>
           <ArrowDown
             className="text-[#1D1A1A] w-[20px] transition-transform duration-200 hover:text-[#757373]"
             style={{
@@ -339,7 +364,13 @@ export default function TaskForm({
           <div className="relative flex flex-col gap-6 mt-6">
             {/* Prioridade */}
             <div className="flex flex-col gap-2">
-              <Label htmlFor="data-tarefa">Prioridade</Label>
+              <Label
+                htmlFor="data-tarefa"
+                style={{ fontSize: "var(--body-font-size)" }}
+                className="font-normal"
+              >
+                Prioridade
+              </Label>
               <div className="flex gap-3 justify-between flex-wrap">
                 <RadioButton
                   id="baixa"
@@ -372,7 +403,13 @@ export default function TaskForm({
             </div>
             {/* Tempo estimado */}
             <div className="flex flex-col gap-2">
-              <Label htmlFor="time-estimate">Tempo estimado</Label>
+              <Label
+                htmlFor="time-estimate"
+                style={{ fontSize: "var(--body-font-size)" }}
+                className="font-normal"
+              >
+                Tempo estimado
+              </Label>
               <Input
                 id="time-estimate"
                 placeholder="ex: 25min, 1h, 2h..."
@@ -384,7 +421,13 @@ export default function TaskForm({
             </div>
             {/* Descrição */}
             <div className="flex flex-col gap-2">
-              <Label htmlFor="description">Descrição</Label>
+              <Label
+                htmlFor="description"
+                style={{ fontSize: "var(--body-font-size)" }}
+                className="font-normal"
+              >
+                Descrição
+              </Label>
               <Textarea
                 id="description"
                 placeholder="Deixe mais contexto..."
@@ -396,7 +439,12 @@ export default function TaskForm({
             </div>
             {/* Tags */}
             <div className="flex flex-col gap-2">
-              <Label>Tags</Label>
+              <Label
+                style={{ fontSize: "var(--body-font-size)" }}
+                className="font-normal"
+              >
+                Tags
+              </Label>
               <div className="flex flex-wrap gap-2 px-4 py-3 border rounded-lg border-[#DDD9DA] min-h-[56px]">
                 <input
                   placeholder="Nome da tag"
@@ -408,7 +456,8 @@ export default function TaskForm({
                 {tags.map((tag, index) => (
                   <span
                     key={index}
-                    className="flex items-center gap-1 px-3 py-1 bg-[#F0EEEF] rounded-sm text-sm text-[#1D1A1A]"
+                    className="flex items-center gap-1 px-3 py-1 bg-[#F0EEEF] rounded-sm text-[#1D1A1A] font-atkinson"
+                    style={{ fontSize: "var(--label-font-size)" }}
                   >
                     {tag}
                     <button
@@ -428,7 +477,10 @@ export default function TaskForm({
       {/* Botões */}
       <div className="flex flex-col gap-2">
         {isFocoRecommended && mode === "create" && (
-          <div className="text-[#757373] flex gap-2 items-center text-sm">
+          <div
+            className="text-[#757373] flex gap-2 items-center font-atkinson"
+            style={{ fontSize: "var(--label-font-size)" }}
+          >
             <FocoDefaultIcon className="text-[#DDD9DA]" /> Essa tarefa combina
             com o modo foco.
           </div>

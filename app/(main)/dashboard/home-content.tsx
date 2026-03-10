@@ -2,152 +2,217 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useUser } from "@stackframe/stack";
-import { Target, Music, CheckSquare } from "lucide-react";
+import { Target, Leaf, CheckSquare, Circle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTasks } from "@/lib/tasks/tasks-context";
 import { cn } from "@/lib/utils";
+import { Card } from "@/components/ui/card";
+import { useStackApp, useUser as useStackUser } from "@stackframe/stack";
+import type { EnergyLevel } from "@/types";
+import { RadioButton } from "@/components/ui/radio-button";
+import { useUser } from "@/presentation/context/UserContext";
+import { useTask } from "@/presentation/context/TaskContext";
+import { TaskCard } from "@/components/tasks/TaskCard";
 
 type EnergyState = "calmo" | "presente" | "focado";
 
-const weekdays = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
-const months = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+const weekdays = [
+  "Domingo",
+  "Segunda",
+  "Terça",
+  "Quarta",
+  "Quinta",
+  "Sexta",
+  "Sábado",
+];
+const months = [
+  "janeiro",
+  "fevereiro",
+  "março",
+  "abril",
+  "maio",
+  "junho",
+  "julho",
+  "agosto",
+  "setembro",
+  "outubro",
+  "novembro",
+  "dezembro",
+];
 
 function formatDate(date: Date) {
   return `${weekdays[date.getDay()]} - ${date.getDate()} de ${months[date.getMonth()]}`;
 }
 
 export function HomeContent() {
-  const user = useUser();
+  // const user = useUser();
+  // const userName =
+  //   user?.displayName?.split(" ")[0] ||
+  //   user?.primaryEmail?.split("@")[0] ||
+  //   "Jane";
+  const stackUser = useStackUser();
   const userName =
-    user?.displayName?.split(" ")[0] ||
-    user?.primaryEmail?.split("@")[0] ||
+    stackUser?.displayName?.split(" ")[0] ||
+    stackUser?.primaryEmail?.split("@")[0] ||
     "Jane";
-  const [energy, setEnergy] = useState<EnergyState>("presente");
-  const { focusNowTask, todayTasks, toggleTask, focusNowId } = useTasks();
+  const { todayEnergy, setTodayEnergy, isLoading: userLoading } = useUser();
+  const { focusNowTask, todayTasks, isLoading: tasksLoading } = useTask();
   const today = formatDate(new Date());
+  const isLoading = userLoading || tasksLoading;
+
+  const energyOptions: {
+    value: EnergyLevel;
+    label: string;
+    icon: React.ElementType;
+  }[] = [
+    { value: "calmo", label: "Calmo", icon: Leaf },
+    { value: "presente", label: "Presente", icon: Circle },
+    { value: "focado", label: "Focado", icon: Target },
+  ];
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 sm:space-y-8 p-4 sm:p-0">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <>
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between p-6 pt-8 md:pt-2 md:p-6">
         <div className="flex items-center gap-4">
-          <div className="size-12 shrink-0 rounded-full bg-[#b8d4e8] sm:size-14" aria-hidden="true" />
+          <div
+            className="size-12 shrink-0 rounded-full bg-[rgb(var(--user-theme))] sm:size-14"
+            aria-hidden="true"
+          />
           <div>
-            <h1 className="text-xl font-bold text-[#1a1a1a] sm:text-2xl">Olá, {userName}</h1>
-            <p className="text-sm text-[#6b6b6b]" aria-label={`Data: ${today}`}>{today}</p>
+            <h1
+              className="text-[#1a1a1a] font-atkinson leading-none"
+              style={{ fontSize: "var(--title-font-size)" }}
+            >
+              Olá, {userName}
+            </h1>
+            <p
+              className="text-[#6b6b6b] font-atkinson"
+              aria-label={`Data: ${today}`}
+              style={{ fontSize: "var(--label-font-size)" }}
+            >
+              {today}
+            </p>
           </div>
         </div>
-        <div className="flex flex-col gap-2" role="group" aria-label="Como está sua energia agora?">
-          <p className="text-sm font-medium text-[#1a1a1a]">
+        <div
+          className="flex flex-col gap-2"
+          role="group"
+          aria-label="Como está sua energia agora?"
+        >
+          <p
+            className="font-normal text-[#1a1a1a]"
+            style={{ fontSize: "var(--body-font-size)" }}
+          >
             Como está sua energia agora?
           </p>
-          <div className="flex flex-wrap gap-2">
-            {(
-              [
-                { value: "calmo" as const, label: "Calmo", icon: Music },
-                { value: "presente" as const, label: "Presente", icon: null },
-                { value: "focado" as const, label: "Focado", icon: Target },
-              ] as const
-            ).map(({ value, label, icon: Icon }) => (
-              <button
+          <div
+            className="flex flex-wrap gap-2"
+            role="group"
+            aria-label="Nível de energia"
+          >
+            {energyOptions.map(({ value, label, icon }) => (
+              <RadioButton
                 key={value}
-                type="button"
-                onClick={() => setEnergy(value)}
-                aria-pressed={energy === value}
-                aria-label={`Energia: ${label}`}
-                className={cn(
-                  "flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
-                  energy === value
-                    ? "border-[#7eb8da] bg-[#7eb8da]/10 text-[#1a1a1a]"
-                    : "border-[#d0d0d0] bg-white text-[#6b6b6b] hover:border-[#a0a0a0]"
-                )}
-              >
-                {Icon && <Icon className="size-4" aria-hidden="true" />}
-                {label}
-              </button>
+                id={`energy-${value}`}
+                value={value}
+                label={label}
+                icon={icon}
+                checked={todayEnergy === value}
+                onChange={(val) => {
+                  if (val) setTodayEnergy(val as EnergyLevel);
+                }}
+                disabled={isLoading}
+              />
             ))}
           </div>
         </div>
       </header>
-
-      <section className="rounded-2xl bg-white/80 p-4 shadow-sm sm:p-6" aria-labelledby="foque-agora-heading">
-        <h2 id="foque-agora-heading" className="text-lg font-semibold text-[#1a1a1a]">Foque agora</h2>
-        <p className="mb-4 text-sm text-[#6b6b6b]">Escolhida para seu momento.</p>
-        <ul className="space-y-3" role="list">
-          {focusNowTask ? (
-            <li
-              role="button"
-              tabIndex={0}
-              onClick={() => toggleTask(focusNowTask.id)}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleTask(focusNowTask.id); } }}
-              aria-label={focusNowTask.done ? `Tarefa concluída: ${focusNowTask.title}. Pressione Enter para desmarcar.` : `Tarefa: ${focusNowTask.title}. Pressione Enter para marcar como concluída.`}
-              className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#e8e8e8] bg-white px-4 py-3 transition-colors hover:bg-[#f8f8f8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-            >
-              {focusNowTask.done ? (
-                <CheckSquare className="size-5 shrink-0 text-[#3b82f6]" />
-              ) : (
-                <span className="flex size-5 shrink-0 items-center justify-center rounded-full border-2 border-[#6b6b6b]" />
-              )}
-              <span
-                className={cn(
-                  "flex-1",
-                  focusNowTask.done ? "text-[#6b6b6b] line-through" : "text-[#1a1a1a]"
-                )}
-              >
-                {focusNowTask.title}
-              </span>
-              <Target className="size-5 shrink-0 text-[#6b6b6b]" />
-            </li>
+      <Card className="p-6 pb-25 flex flex-col gap-7 md:pb-10 md:flex-1 md:min-h-0 md:pr-0">
+        <div className="flex flex-col gap-7 md:overflow-y-auto md:flex-1 md:min-h-0 md:pr-4">
+          {isLoading ? (
+            <div className="space-y-3">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="h-12 rounded-xl bg-muted animate-pulse"
+                />
+              ))}
+            </div>
           ) : (
-            <li className="rounded-xl border border-dashed border-[#e8e8e8] px-4 py-3 text-center text-sm text-[#6b6b6b]">
-              Nenhuma tarefa em foco.{" "}
-              <Link href="/tarefas" className="font-medium text-[#1a1a1a] underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded" aria-label="Ir para Tarefas e escolher uma tarefa em foco">
-                Escolher na aba Tarefas
-              </Link>
-            </li>
-          )}
-        </ul>
-      </section>
+            <>
+              {/* Foque agora */}
+              <section aria-labelledby="foque-agora-heading">
+                <h2
+                  id="foque-agora-heading"
+                  style={{ fontSize: "var(--title-font-size)" }}
+                  className="font-atkinson text-foreground"
+                >
+                  Foque agora
+                </h2>
+                <p
+                  style={{ fontSize: "var(--label-font-size)" }}
+                  className="text-muted-foreground mb-3"
+                >
+                  Escolhida para seu momento.
+                </p>
 
-      <section className="rounded-2xl bg-white/80 p-4 shadow-sm sm:p-6" aria-labelledby="hoje-heading">
-        <h2 id="hoje-heading" className="mb-4 text-lg font-semibold text-[#1a1a1a]">Hoje</h2>
-        <ul className="space-y-3" role="list">
-          {todayTasks.map((task) => (
-            <li
-              key={task.id}
-              role="button"
-              tabIndex={0}
-              onClick={() => toggleTask(task.id)}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleTask(task.id); } }}
-              aria-label={task.done ? `Concluída: ${task.title}. Pressione Enter para desmarcar.` : `${task.title}. Pressione Enter para marcar como concluída.`}
-              className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#e8e8e8] bg-white px-4 py-3 transition-colors hover:bg-[#f8f8f8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-            >
-              {task.done ? (
-                <CheckSquare className="size-5 shrink-0 text-[#3b82f6]" />
-              ) : (
-                <span className="flex size-5 shrink-0 items-center justify-center rounded border-2 border-[#6b6b6b]" />
-              )}
-              <span
-                className={cn(
-                  "flex-1",
-                  task.done ? "text-[#6b6b6b] line-through" : "text-[#1a1a1a]"
+                {focusNowTask ? (
+                  <TaskCard task={focusNowTask} />
+                ) : (
+                  <p
+                    style={{ fontSize: "var(--body-font-size)" }}
+                    className="text-muted-foreground"
+                  >
+                    {todayEnergy
+                      ? "Nenhuma tarefa pendente para seu nível de energia."
+                      : "Selecione sua energia para ver a sugestão de foco."}
+                  </p>
                 )}
-              >
-                {task.title}
-              </span>
-              {!task.done && task.id === focusNowId && (
-                <Target className="size-5 shrink-0 text-[#6b6b6b]" />
-              )}
-            </li>
-          ))}
-        </ul>
-        <Button
-          asChild
-          className="mt-4 w-full rounded-xl bg-[#1a1a1a] text-white hover:bg-[#333] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-        >
-          <Link href="/tarefas" aria-label="Ver todas as tarefas">Ver todas</Link>
-        </Button>
-      </section>
-    </div>
+              </section>
+              <hr />
+
+              {/* Hoje */}
+              <section aria-labelledby="hoje-heading">
+                <h2
+                  id="hoje-heading"
+                  style={{ fontSize: "var(--title-font-size)" }}
+                  className="font-atkinson text-foreground mb-3"
+                >
+                  Hoje
+                </h2>
+
+                {(() => {
+                  const otherTasks = todayTasks
+                    .filter((t) => t.id !== focusNowTask?.id)
+                    .slice(0, 3);
+
+                  return otherTasks.length === 0 ? (
+                    <p
+                      style={{ fontSize: "var(--body-font-size)" }}
+                      className="text-muted-foreground"
+                    >
+                      Nenhuma outra tarefa para hoje.
+                    </p>
+                  ) : (
+                    <div className="flex flex-col gap-3">
+                      {otherTasks.map((task) => (
+                        <TaskCard key={task.id} task={task} />
+                      ))}
+                    </div>
+                  );
+                })()}
+
+                <Button
+                  asChild
+                  className="mt-4 w-full rounded-xl bg-[#1D1A1A] text-white hover:bg-[#333]"
+                >
+                  <Link href="/tarefas">Ver todas</Link>
+                </Button>
+              </section>
+            </>
+          )}
+        </div>
+      </Card>
+    </>
   );
 }

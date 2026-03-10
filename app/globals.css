@@ -179,25 +179,6 @@
   --user-theme: 221 217 218;
 }
 
-/* Preferência de tamanho de fontes */
-[user-font="compacto"] {
-  --label-font-size: 13px;
-  --body-font-size: 14px;
-  --title-font-size: 24px;
-}
-
-[user-font="conforto"] {
-  --label-font-size: 14px;
-  --body-font-size: 16px;
-  --title-font-size: 26px;
-}
-
-[user-font="acessivel"] {
-  --label-font-size: 16px;
-  --body-font-size: 18px;
-  --title-font-size: 32px;
-}
-
 button,
 [role="button"],
 a[href],

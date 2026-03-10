@@ -88,12 +88,17 @@ export function CircularTimer({
       {/* Tempo + label */}
       <div className="relative flex flex-col items-center leading-tight">
         <span
-          className={`${fontSize} font-light tabular-nums tracking-tight text-gray-800`}
+          className={`${fontSize} font-light tabular-nums tracking-tight text-gray-800 font-atkinson`}
         >
           {formattedTime}
         </span>
         {size === "lg" && (
-          <span className={`${labelSize} text-gray-400 mt-1`}>{label}</span>
+          <span
+            className={`text-gray-400 mt-1`}
+            style={{ fontSize: "var(--label-font-size)" }}
+          >
+            {label}
+          </span>
         )}
       </div>
     </div>

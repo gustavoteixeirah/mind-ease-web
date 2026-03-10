@@ -16,9 +16,17 @@ export function SubtaskList({ subtasks, onToggle }: SubtaskListProps) {
   return (
     <div className="w-full">
       {/* Header */}
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-sm text-gray-400">Sub-tarefas</span>
-        <span className="text-xs text-gray-400">
+      <div className="flex items-center justify-between mb-2">
+        <span
+          className="text-gray-400"
+          style={{ fontSize: "var(--body-font-size)" }}
+        >
+          Sub-tarefas
+        </span>
+        <span
+          className=" text-gray-400"
+          style={{ fontSize: "var(--body-font-size)" }}
+        >
           {completed}/{total}
         </span>
       </div>
@@ -107,11 +115,12 @@ function SubtaskItem({ subtask, onToggle }: SubtaskItemProps) {
         {/* Text */}
         <span
           className={`
-            text-sm leading-snug transition-colors duration-200
+            leading-snug transition-colors duration-200
             ${
               subtask.completed ? "line-through text-gray-300" : "text-gray-700"
             }
           `}
+          style={{ fontSize: "var(--body-font-size)" }}
         >
           {subtask.text}
         </span>

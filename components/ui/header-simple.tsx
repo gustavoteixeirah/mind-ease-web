@@ -8,7 +8,12 @@ type HeaderSimpleProps = {
 export default function HeaderSimple({ title, children }: HeaderSimpleProps) {
   return (
     <div className="flex items-center pt-10 justify-between p-6 md:p-0 md:pt-0 md:pb-3">
-      <h2 className="text-[24px] font-atkinson">{title}</h2>
+      <h2
+        className="font-atkinson"
+        style={{ fontSize: "var(--title-font-size)" }}
+      >
+        {title}
+      </h2>
       {children}
     </div>
   );

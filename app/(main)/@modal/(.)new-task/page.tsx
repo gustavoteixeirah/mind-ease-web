@@ -23,6 +23,7 @@ export default function NewTaskModal() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
+  // Evita scroll do body no mobile quando modal aberto
   useEffect(() => {
     if (mounted && isMobile) {
       document.body.style.overflow = "hidden";

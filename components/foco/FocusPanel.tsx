@@ -32,21 +32,32 @@ export function FocusPanel() {
     !isPaused;
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 pt-6 pb-3 gap-6">
+    <div className="flex flex-col flex-1 min-h-0 pt-6 pb-3 gap-20 md:gap-10">
       {/* Fixed content - never scrolls */}
       <div className="flex flex-col items-center gap-4 flex-shrink-0 px-6">
-        <h2 className="text-2xl text-[#757373]">{activeTask.title}</h2>
+        <h2
+          className="text-[#757373] font-atkinson"
+          style={{ fontSize: "var(--title-font-size)" }}
+        >
+          {activeTask.title}
+        </h2>
         <CircularTimer
           progress={progress}
           formattedTime={formattedTime}
           label={label}
           timerState={timerState}
         />
-        <p className="text-sm text-[#757373]">{nextLabel}</p>
+        <p
+          className="text-[#757373] font-atkinson"
+          style={{ fontSize: "var(--label-font-size)" }}
+        >
+          {nextLabel}
+        </p>
         <div className="flex items-center gap-12">
           <button
             onClick={addFiveMinutes}
             className="underline hover:cursor-pointer"
+            style={{ fontSize: "var(--body-font-size)" }}
           >
             + 5 minutos
           </button>
