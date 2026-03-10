@@ -10,19 +10,11 @@ import { Card } from "../ui/card";
 import { X } from "lucide-react";
 
 export function FocusPanelWrapper() {
-  const { activeTask } = useFocus();
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const { activeTask, isPanelOpen, setIsPanelOpen } = useFocus();
   const pathname = usePathname();
   const isMobile = useIsMobile();
 
   const isOnFocusPage = pathname === "/focus";
-
-  // Open panel when a new task is focused (desktop only)
-  useEffect(() => {
-    if (activeTask) setIsPanelOpen(true);
-  }, [activeTask?.id]);
-
-  if (!activeTask) return null;
 
   // Mobile: footer aparece em todo lugar exceto no /focus
   // Desktop: footer aparece quando o painel de foco está fechado

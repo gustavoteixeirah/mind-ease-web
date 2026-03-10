@@ -41,6 +41,7 @@ export function TaskCard({
     } as const;
 
     startFocus(task, origin);
+    console.log("FOco");
 
     if (isMobile) router.push("/focus");
   };
@@ -56,7 +57,10 @@ export function TaskCard({
   };
 
   return (
-    <div className="flex flex-col gap-1 w-full rounded-md border border-[#DDD9DA] bg-white transition-all duration-200 relative overflow-hidden hover:cursor-pointer hover:border-[#1D1A1A]">
+    <div
+      onClick={handleTaskDetails}
+      className="flex flex-col gap-1 w-full rounded-md border border-[#DDD9DA] bg-white transition-all duration-200 relative overflow-hidden hover:cursor-pointer hover:border-[#1D1A1A]"
+    >
       {/* Detalhado: tags row */}
       {detailed && task.tags.length > 0 && (
         <div className="flex gap-1.5 flex-wrap px-4 pt-3 pb-0">
@@ -76,7 +80,10 @@ export function TaskCard({
       <div className="flex items-center gap-3 px-4 py-3">
         {/* Checkbox de conclusão */}
         <button
-          onClick={() => toggleComplete(task.id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleComplete(task.id);
+          }}
           aria-label={
             task.completed ? "Marcar como pendente" : "Marcar como concluída"
           }
@@ -117,7 +124,6 @@ export function TaskCard({
             task.completed ? "line-through text-[#C4C0C1]" : "text-[#1D1A1A]",
           )}
           style={{ fontSize: "var(--body-font-size)" }}
-          onClick={handleTaskDetails}
         >
           {task.title}
         </span>
@@ -127,7 +133,7 @@ export function TaskCard({
           <button
             onClick={handleFocus}
             aria-label="Entrar em modo foco"
-            className="z-10 shrink-0 text-[#C4C0C1] hover:text-[#757373] transition-colors hover:cursor-pointer"
+            className="z-10 shrink-0 p-2 -mr-2 text-[#C4C0C1] hover:text-[#757373] transition-colors hover:cursor-pointer"
           >
             {isFocusActive ? (
               <FocoAtivoIcon className="w-4 h-4" />

@@ -106,6 +106,8 @@ interface FocusContextValue {
   toggleTimer: () => void;
   addFiveMinutes: () => void;
   stopFocus: () => void;
+  isPanelOpen: boolean;
+  setIsPanelOpen: (open: boolean) => void;
 }
 
 const FocusContext = createContext<FocusContextValue | null>(null);
@@ -126,6 +128,7 @@ export function FocusProvider({ children }: { children: ReactNode }) {
   const [secondsRemaining, setSecondsRemaining] = useState(0);
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [hydrated, setHydrated] = useState(false);
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   // Refs for values that need to be read inside callbacks without stale closures
   const currentCycleRef = useRef(1);
@@ -375,6 +378,7 @@ export function FocusProvider({ children }: { children: ReactNode }) {
 
   const startFocus = useCallback(
     (task: Task, focusOrigin: FocusOrigin) => {
+      setIsPanelOpen(true); // ← add this
       if (activeTask?.id === task.id) {
         setOrigin(focusOrigin);
         return;
@@ -523,6 +527,8 @@ export function FocusProvider({ children }: { children: ReactNode }) {
         toggleTimer,
         addFiveMinutes,
         stopFocus,
+        isPanelOpen,
+        setIsPanelOpen,
       }}
     >
       {children}
