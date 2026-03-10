@@ -6,9 +6,17 @@ export function FocoAtivoIcon({ className }: { className?: string }) {
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
     >
-      <circle cx="8" cy="8" r="7.4" stroke="#DDD9DA" stroke-width="1.2" />
-      <circle cx="8" cy="8" r="3.4" stroke="#DDD9DA" stroke-width="1.2" />
+      <circle
+        cx="8"
+        cy="8"
+        r="7.4"
+        fill="#D9D9D9"
+        stroke="#F7F7F7"
+        strokeWidth="1.2"
+      />
+      <circle cx="8" cy="8" r="3.4" stroke="#F7F7F7" strokeWidth="1.2" />
     </svg>
   );
 }

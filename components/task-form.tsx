@@ -8,7 +8,7 @@ import {
   Task,
   WhenOption,
 } from "@/types";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { RadioButton } from "./ui/radio-button";
@@ -24,9 +24,19 @@ import { toast } from "sonner";
 type TaskFormProps = {
   defaultValues?: Task;
   onSubmit?: (data: Task) => void;
+  onSubmitWithFocus?: (data: Task) => void;
+  onDelete?: () => void;
+  // Quando editar uma tarefa, não mostrar o botão de "Criar tarefa + Foco"
+  mode?: "create" | "edit";
 };
 
-export default function TaskForm({ defaultValues, onSubmit }: TaskFormProps) {
+export default function TaskForm({
+  defaultValues,
+  onSubmit,
+  onSubmitWithFocus,
+  onDelete,
+  mode = "create",
+}: TaskFormProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   // Form states
@@ -108,13 +118,12 @@ export default function TaskForm({ defaultValues, onSubmit }: TaskFormProps) {
     (priority === "alta" && when === "agora");
 
   //Submit
-  const handleSubmit = () => {
+  const buildData = (): NewTask | null => {
     if (!title) {
       toast.error("O título da tarefa é obrigatório.");
-      return;
+      return null;
     }
-
-    const data: NewTask = {
+    return {
       title,
       when,
       scheduledDate: when === "escolher" ? scheduledDate : null,
@@ -125,7 +134,16 @@ export default function TaskForm({ defaultValues, onSubmit }: TaskFormProps) {
       subtasks: subTasks,
       tags,
     };
-    onSubmit?.(data as Task);
+  };
+
+  const handleSubmit = () => {
+    const data = buildData();
+    if (data) onSubmit?.(data);
+  };
+
+  const handleSubmitWithFocus = () => {
+    const data = buildData();
+    if (data) onSubmitWithFocus?.(data);
   };
 
   return (
@@ -257,7 +275,7 @@ export default function TaskForm({ defaultValues, onSubmit }: TaskFormProps) {
       {/* Sub-tarefas */}
       <div className="flex flex-col gap-2">
         <button
-          className="underline text-left w-fit"
+          className="underline text-left w-fit hover:cursor-pointer hover:text-[#757373]"
           onClick={() => setIsAddingSubTask(true)}
         >
           + Criar sub-tarefa
@@ -304,7 +322,7 @@ export default function TaskForm({ defaultValues, onSubmit }: TaskFormProps) {
         >
           <h2 className="text-[#1D1A1A]">Mais detalhes</h2>
           <ArrowDown
-            className="text-[#1D1A1A] w-[20px] transition-transform duration-200"
+            className="text-[#1D1A1A] w-[20px] transition-transform duration-200 hover:text-[#757373]"
             style={{
               transform: isDetailsOpen ? "rotate(180deg)" : "rotate(0deg)",
             }}
@@ -406,19 +424,43 @@ export default function TaskForm({ defaultValues, onSubmit }: TaskFormProps) {
         </div>
       </div>
 
+      {/* Botões */}
       <div className="flex flex-col gap-2">
-        {isFocoRecommended && (
+        {isFocoRecommended && mode === "create" && (
           <div className="text-[#757373] flex gap-2 items-center text-sm">
             <FocoDefaultIcon className="text-[#DDD9DA]" /> Essa tarefa combina
             com o modo foco.
           </div>
         )}
-        <Button className="w-full border bg-transparent border-[#DDD9DA] font-normal text-[#757373]">
-          Criar tarefa + Foco
+        {mode === "create" && (
+          <Button
+            className={cn(
+              "w-full border bg-transparent border-[#DDD9DA] font-normal text-[#757373]",
+              "hover:cursor-pointer hover:bg-[rgb(var(--user-theme))] hover:text-[#1D1A1A] hover:border-[rgb(var(--user-theme))] transition-colors",
+            )}
+            onClick={handleSubmitWithFocus}
+          >
+            Criar tarefa + Foco
+          </Button>
+        )}
+        <Button
+          className={cn(
+            "w-full",
+            "hover:cursor-pointer hover:bg-[#757373] hover:border-[#757373] transition-colors",
+          )}
+          onClick={handleSubmit}
+        >
+          {mode === "create" ? "Criar tarefa" : "Atualizar tarefa"}
         </Button>
-        <Button className="w-full" onClick={handleSubmit}>
-          Criar tarefa
-        </Button>
+        {mode === "edit" && (
+          <Button
+            variant="destructive"
+            className="hover:cursor-pointer"
+            onClick={onDelete}
+          >
+            Excluir tarefa
+          </Button>
+        )}
       </div>
     </div>
   );
