@@ -38,9 +38,9 @@ export function FocusPanelWrapper() {
   return (
     <>
       {showPanel && (
-        <aside>
-          <Card className="h-full">
-            <header className="px-6 flex flex-row items-center justify-between">
+        <aside className="md:w-80 md:h-full flex-shrink-0">
+          <Card className="h-full flex flex-col overflow-hidden">
+            <header className="px-6 pt-3 flex flex-row items-center justify-between flex-shrink-0">
               <h2 className="font-(--font-atkinson-family) text-[18px]">
                 Modo Foco
               </h2>

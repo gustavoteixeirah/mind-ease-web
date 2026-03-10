@@ -66,8 +66,8 @@ function SubtaskItem({ subtask, onToggle }: SubtaskItemProps) {
         className="
           w-full flex items-center gap-3
           px-4 py-3 rounded-xl
-          bg-white border border-gray-100
-          hover:border-gray-200 hover:bg-gray-50
+          bg-white border border-[#DDD9DA]
+          hover:border-[#757373] hover:bg-gray-50
           transition-all duration-150
           text-left group
         "
@@ -75,13 +75,13 @@ function SubtaskItem({ subtask, onToggle }: SubtaskItemProps) {
         {/* Checkbox */}
         <span
           className={`
-            shrink-0 w-5 h-5 rounded-full border-2
+            shrink-0 w-5 h-5 rounded-full border-1
             flex items-center justify-center
-            transition-all duration-200
+            transition-all duration-200 hover:cursor-pointer hover:bg-gray-100
             ${
               subtask.completed
                 ? "bg-[rgb(var(--user-theme))] border-[rgb(var(--user-theme))]"
-                : "border-gray-300 group-hover:border-[rgb(var(--user-theme))]"
+                : "border-gray-300 group-hover:border-[#757373]"
             }
           `}
         >

@@ -73,7 +73,7 @@ export default function RootLayout({
       <body
         className={cn(
           `${geistSans.variable} ${geistMono.variable} antialiased`,
-          "md:flex md:flex-row-reverse md:p-10 md:pl-30 md:gap-3",
+          "md:flex md:flex-row-reverse md:p-10 md:pl-30 md:gap-3 md:h-screen md:overflow-hidden",
         )}
       >
         <StackProvider app={stackClientApp} lang="pt-BR">

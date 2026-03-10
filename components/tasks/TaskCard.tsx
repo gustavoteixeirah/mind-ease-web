@@ -83,10 +83,10 @@ export function TaskCard({
         >
           <span
             className={cn(
-              "w-5 h-5 rounded-full border-[1.5px] flex items-center justify-center transition-all duration-200",
+              "w-5 h-5 rounded-full border-[1.3px] flex items-center justify-center transition-all duration-200",
               task.completed
                 ? "bg-[rgb(var(--user-theme))] border-[rgb(var(--user-theme))]"
-                : "border-[#1D1A1A] hover:border-[rgb(var(--user-theme))]",
+                : "border-[#1D1A1A] hover:border-[#757373] hover:bg-gray-100",
             )}
           >
             {task.completed && (
