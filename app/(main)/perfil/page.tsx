@@ -1,48 +1,54 @@
 "use client";
 
-import { useUser } from "@stackframe/stack";
-import { usePreferences, getThemeColor } from "@/lib/preferences/preferences-context";
-import type { BreakMinutes, ColorTheme, FocusMinutes, TextSize } from "@/lib/preferences/types";
+import { useUser as useStackUser } from "@stackframe/stack";
+import { useUser } from "@/presentation/context/UserContext";
+import type {
+  TextSize,
+  ColorTheme,
+  ShortBreakMinutes,
+  FocusMinutes,
+} from "@/types";
 import { cn } from "@/lib/utils";
 import { useCallback, useState } from "react";
+import HeaderSimple from "@/components/ui/header-simple";
+import { Card } from "@/components/ui/card";
+import { RadioButton } from "@/components/ui/radio-button";
 
 const TEXT_SIZE_OPTIONS: { value: TextSize; label: string }[] = [
-  { value: "compact", label: "Compacto A↓" },
-  { value: "comfort", label: "Conforto AA" },
-  { value: "accessible", label: "Acessível A↑" },
+  { value: "compacto", label: "Compacto A↓" },
+  { value: "conforto", label: "Conforto AA" },
+  { value: "acessivel", label: "Acessível A↑" },
 ];
 
-const FOCUS_OPTIONS: { value: FocusMinutes }[] = [
-  { value: 25 },
-  { value: 30 },
-  { value: 35 },
+const FOCUS_OPTIONS: { value: FocusMinutes; label: string }[] = [
+  { value: 25, label: "25m" },
+  { value: 30, label: "30m" },
+  { value: 35, label: "35m" },
 ];
 
-const BREAK_OPTIONS: { value: BreakMinutes }[] = [
-  { value: 2 },
-  { value: 5 },
-  { value: 10 },
+const BREAK_OPTIONS: { value: ShortBreakMinutes; label: string }[] = [
+  { value: 2, label: "2m" },
+  { value: 5, label: "5m" },
+  { value: 10, label: "10m" },
 ];
 
-const COLOR_THEMES: ColorTheme[] = ["blue", "purple", "yellow", "orange", "green", "gray"];
+const COLOR_THEMES: { value: ColorTheme; hex: string; label: string }[] = [
+  { value: "default", hex: "#cbe4f7", label: "Azul" },
+  { value: "roxo", hex: "#d8d1f5", label: "Roxo" },
+  { value: "rosa", hex: "#ecbed5", label: "Rosa" },
+  { value: "amarelo", hex: "#f8eecd", label: "Amarelo" },
+  { value: "laranja", hex: "#fad5be", label: "Laranja" },
+  { value: "verde", hex: "#b6dfce", label: "Verde" },
+  { value: "cinza", hex: "#ddd9da", label: "Cinza" },
+];
 
 export default function PerfilPage() {
-  const user = useUser();
-  const {
-    textSize,
-    focusMinutes,
-    breakMinutes,
-    colorTheme,
-    setTextSize,
-    setFocusMinutes,
-    setBreakMinutes,
-    setColorTheme,
-    save,
-    isDirty,
-  } = usePreferences();
+  const stackUser = useStackUser();
+  const { preferences, updatePreferences } = useUser();
+  const { textSize, colorTheme, pomodoro } = preferences;
 
-  const hasName = Boolean(user?.displayName?.trim());
-  const displayName = user?.displayName?.trim() || "";
+  const hasName = Boolean(stackUser?.displayName?.trim());
+  const displayName = stackUser?.displayName?.trim() || "";
   const [editingName, setEditingName] = useState(false);
   const [nameInput, setNameInput] = useState(displayName);
   const [savingName, setSavingName] = useState(false);
@@ -53,11 +59,7 @@ export default function PerfilPage() {
   }, [displayName]);
 
   const handleSaveName = useCallback(async () => {
-    if (!user) {
-      setEditingName(false);
-      return;
-    }
-    if (nameInput.trim() === "" && displayName === "") {
+    if (!stackUser) {
       setEditingName(false);
       return;
     }
@@ -67,14 +69,14 @@ export default function PerfilPage() {
     }
     setSavingName(true);
     try {
-      await user.update({ displayName: nameInput.trim() });
+      await stackUser.update({ displayName: nameInput.trim() });
       setEditingName(false);
     } catch {
       // keep editing on error
     } finally {
       setSavingName(false);
     }
-  }, [user, nameInput, displayName]);
+  }, [stackUser, nameInput, displayName]);
 
   const handleKeyDownName = useCallback(
     (e: React.KeyboardEvent) => {
@@ -84,186 +86,219 @@ export default function PerfilPage() {
         setEditingName(false);
       }
     },
-    [handleSaveName, displayName]
+    [handleSaveName, displayName],
   );
 
-  const nameButtonLabel = hasName ? displayName : "Adicionar nome";
-
   return (
-    <div className="min-h-full p-4 sm:p-6 md:p-8">
-      <div className="mx-auto w-full max-w-4xl sm:w-[90%]">
-        <div className="flex flex-col rounded-2xl bg-[#f8f8f8] p-4 shadow-[0_2px_16px_rgba(0,0,0,0.06)] sm:p-6 md:p-10">
-          <h1 className="text-xl font-bold text-[#1a1a1a] sm:text-2xl">Perfil</h1>
-
-          <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-            <div
-              className="flex size-14 shrink-0 items-center justify-center rounded-full text-lg font-medium text-[#1a1a1a] sm:size-16"
-              style={{ backgroundColor: "var(--mindease-accent, #7eb8da)" }}
-              aria-hidden="true"
-            >
-              {hasName ? displayName.charAt(0).toUpperCase() : "?"}
-            </div>
-            <div className="min-w-0 flex-1">
-              {editingName ? (
-                <div className="flex flex-wrap items-center gap-2">
-                  <label htmlFor="perfil-nome" className="sr-only">Seu nome</label>
-                  <input
-                    id="perfil-nome"
-                    type="text"
-                    value={nameInput}
-                    onChange={(e) => setNameInput(e.target.value)}
-                    onBlur={handleSaveName}
-                    onKeyDown={handleKeyDownName}
-                    aria-label="Editar nome"
-                    className="rounded-lg border border-[#e0e0e0] bg-white px-3 py-2 text-[#1a1a1a] outline-none focus:border-[var(--mindease-accent)] focus:ring-2 focus:ring-[var(--mindease-accent)]/20"
-                    placeholder="Seu nome"
-                    autoFocus
-                  />
-                  <button
-                    type="button"
-                    onClick={handleSaveName}
-                    disabled={savingName}
-                    aria-label="Salvar nome"
-                    className="rounded-lg bg-[#1a1a1a] px-4 py-2 text-sm font-medium text-white hover:bg-[#333] disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                  >
-                    {savingName ? "Salvando…" : "Salvar"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setNameInput(displayName);
-                      setEditingName(false);
-                    }}
-                    aria-label="Cancelar edição do nome"
-                    className="text-sm text-[#6b6b6b] underline hover:text-[#1a1a1a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded"
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              ) : (
+    <div className="flex flex-col h-full">
+      <HeaderSimple title="Perfil" />
+      <Card className="flex flex-col h-full gap-4 p-4 pt-10 md:pb-10 md:px-6 md:overflow-y-auto">
+        {/* Avatar + nome */}
+        <div className="flex gap-4 items-center">
+          <div
+            className="flex size-14 shrink-0 items-center justify-center rounded-full sm:size-16"
+            style={{ backgroundColor: "rgb(var(--user-theme))" }}
+            aria-hidden
+          />
+          <div className="min-w-0 flex-1">
+            {editingName ? (
+              <div className="flex flex-wrap items-center gap-2">
+                <label htmlFor="perfil-nome" className="sr-only">
+                  Seu nome
+                </label>
+                <input
+                  id="perfil-nome"
+                  type="text"
+                  value={nameInput}
+                  onChange={(e) => setNameInput(e.target.value)}
+                  onBlur={handleSaveName}
+                  onKeyDown={handleKeyDownName}
+                  className="rounded-lg border border-[#e0e0e0] bg-white px-3 py-2 text-[#1a1a1a] outline-none focus:border-[var(--mindease-accent)]"
+                  placeholder="Seu nome"
+                  autoFocus
+                />
                 <button
                   type="button"
-                  onClick={handleStartEditName}
-                  aria-label={hasName ? `Editar nome: ${displayName}` : "Adicionar nome"}
-                  className="text-left text-base font-medium text-[#1a1a1a] underline decoration-[#1a1a1a]/50 underline-offset-2 hover:decoration-[#1a1a1a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded sm:text-lg"
+                  onClick={handleSaveName}
+                  disabled={savingName}
+                  className="rounded-lg bg-[#1a1a1a] px-4 py-2 text-sm font-medium text-white hover:bg-[#333] disabled:opacity-50"
                 >
-                  {nameButtonLabel}
+                  {savingName ? "Salvando…" : "Salvar"}
                 </button>
-              )}
-            </div>
-          </div>
-
-          <section className="mt-8 sm:mt-10 flex flex-1 flex-col" aria-labelledby="preferencias-heading">
-            <h2 id="preferencias-heading" className="mb-6 text-lg font-bold text-[#1a1a1a]">Preferências</h2>
-
-            <div className="flex flex-col items-start gap-6">
-              <div className="flex w-full flex-col items-start" role="group" aria-label="Tamanho do texto">
-                <p className="mb-2 text-sm font-medium text-[#1a1a1a]" id="text-size-label">Tamanho do texto</p>
-                <div className="flex w-full gap-2" role="radiogroup" aria-labelledby="text-size-label">
-                  {TEXT_SIZE_OPTIONS.map(({ value, label }) => (
-                    <button
-                      key={value}
-                      type="button"
-                      onClick={() => setTextSize(value)}
-                      aria-pressed={textSize === value}
-                      aria-label={label}
-                      className={cn(
-                        "min-w-0 flex-1 rounded-2xl px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
-                        textSize === value
-                          ? "bg-[#7eb8da] text-white"
-                          : "bg-[#e8e8e8] text-[#1a1a1a] hover:bg-[#e0e0e0]"
-                      )}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setNameInput(displayName);
+                    setEditingName(false);
+                  }}
+                  className="text-sm text-[#6b6b6b] underline hover:text-[#1a1a1a]"
+                >
+                  Cancelar
+                </button>
               </div>
-
-              <div className="flex w-full flex-col items-start" role="group" aria-label="Quantos minutos de foco?">
-                <p className="mb-2 text-sm font-medium text-[#1a1a1a]" id="focus-label">Quantos minutos de foco?</p>
-                <div className="flex w-full gap-2" role="radiogroup" aria-labelledby="focus-label">
-                  {FOCUS_OPTIONS.map(({ value }) => (
-                    <button
-                      key={value}
-                      type="button"
-                      onClick={() => setFocusMinutes(value)}
-                      aria-pressed={focusMinutes === value}
-                      aria-label={`${value} minutos`}
-                      className={cn(
-                        "min-w-0 flex-1 rounded-2xl px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
-                        focusMinutes === value
-                          ? "bg-[#7eb8da] text-white"
-                          : "bg-[#e8e8e8] text-[#1a1a1a] hover:bg-[#e0e0e0]"
-                      )}
-                    >
-                      {value}m
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex w-full flex-col items-start" role="group" aria-label="Quantos minutos de pausa?">
-                <p className="mb-2 text-sm font-medium text-[#1a1a1a]" id="break-label">Quantos minutos de pausa?</p>
-                <div className="flex w-full gap-2" role="radiogroup" aria-labelledby="break-label">
-                  {BREAK_OPTIONS.map(({ value }) => (
-                    <button
-                      key={value}
-                      type="button"
-                      onClick={() => setBreakMinutes(value)}
-                      aria-pressed={breakMinutes === value}
-                      aria-label={`${value} minutos`}
-                      className={cn(
-                        "min-w-0 flex-1 rounded-2xl px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
-                        breakMinutes === value
-                          ? "bg-[#7eb8da] text-white"
-                          : "bg-[#e8e8e8] text-[#1a1a1a] hover:bg-[#e0e0e0]"
-                      )}
-                    >
-                      {value}m
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex w-full flex-col items-start" role="group" aria-label="Tema de cor">
-                <p className="mb-2 text-sm font-medium text-[#1a1a1a]" id="theme-label">Tema de cor</p>
-                <div className="flex flex-wrap gap-3" role="radiogroup" aria-labelledby="theme-label">
-                  {COLOR_THEMES.map((theme) => {
-                    const hex = getThemeColor(theme);
-                    const isSelected = colorTheme === theme;
-                    return (
-                      <button
-                        key={theme}
-                        type="button"
-                        onClick={() => setColorTheme(theme)}
-                        aria-pressed={isSelected}
-                        aria-label={`Tema ${theme}${isSelected ? ", selecionado" : ""}`}
-                        className={cn(
-                          "size-10 rounded-full transition-transform hover:scale-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
-                          isSelected && "ring-2 ring-[#4a4a4a] ring-offset-2"
-                        )}
-                        style={{ backgroundColor: hex }}
-                        title={theme}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-
+            ) : (
               <button
                 type="button"
-                onClick={save}
-                disabled={!isDirty}
-                aria-label="Salvar preferências"
-                className="mt-6 w-full rounded-2xl bg-[#1a1a1a] py-3.5 text-sm font-medium text-white hover:bg-[#333] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                onClick={handleStartEditName}
+                aria-label={
+                  hasName ? `Editar nome: ${displayName}` : "Adicionar nome"
+                }
+                className="text-left underline decoration-[#1a1a1a]/50 underline-offset-2 hover:decoration-[#1a1a1a] font-atkinson"
+                style={{ fontSize: "var(--title-font-size)" }}
               >
-                Salvar preferências
+                {hasName ? displayName : "Adicionar nome"}
               </button>
-            </div>
-          </section>
+            )}
+          </div>
         </div>
-      </div>
+
+        {/* Preferências */}
+        <section
+          className="mt-8 sm:mt-10 flex flex-1 flex-col pb-20 md:pb-0"
+          aria-labelledby="preferencias-heading"
+        >
+          <h2
+            id="preferencias-heading"
+            className="mb-6 text-[#1a1a1a] font-atkinson"
+            style={{ fontSize: "var(--title-font-size)" }}
+          >
+            Preferências
+          </h2>
+
+          <div className="flex flex-col items-start gap-6">
+            {/* Tamanho do texto */}
+            <div
+              className="flex w-full flex-col gap-2"
+              role="group"
+              aria-labelledby="text-size-label"
+            >
+              <p
+                id="text-size-label"
+                className="text-[#1a1a1a]"
+                style={{ fontSize: "var(--body-font-size)" }}
+              >
+                Tamanho do texto
+              </p>
+              <div className="flex w-full gap-2">
+                {TEXT_SIZE_OPTIONS.map(({ value, label }) => (
+                  <RadioButton
+                    key={value}
+                    id={`text-size-${value}`}
+                    value={value}
+                    label={label}
+                    checked={textSize === value}
+                    onChange={(val) => {
+                      if (val) updatePreferences({ textSize: val as TextSize });
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Minutos de foco */}
+            <div
+              className="flex w-full flex-col gap-2"
+              role="group"
+              aria-labelledby="focus-label"
+            >
+              <p
+                id="focus-label"
+                className="text-[#1a1a1a]"
+                style={{ fontSize: "var(--body-font-size)" }}
+              >
+                Quantos minutos de foco?
+              </p>
+              <div className="flex w-full gap-2">
+                {FOCUS_OPTIONS.map(({ value, label }) => (
+                  <RadioButton
+                    key={value}
+                    id={`focus-${value}`}
+                    value={String(value)}
+                    label={label}
+                    checked={pomodoro.focusMinutes === value}
+                    onChange={(val) => {
+                      if (val)
+                        updatePreferences({
+                          pomodoro: {
+                            ...pomodoro,
+                            focusMinutes: Number(val) as FocusMinutes,
+                          },
+                        });
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Minutos de pausa */}
+            <div
+              className="flex w-full flex-col gap-2"
+              role="group"
+              aria-labelledby="break-label"
+            >
+              <p
+                id="break-label"
+                className="text-[#1a1a1a]"
+                style={{ fontSize: "var(--body-font-size)" }}
+              >
+                Quantos minutos de pausa?
+              </p>
+              <div className="flex w-full gap-2">
+                {BREAK_OPTIONS.map(({ value, label }) => (
+                  <RadioButton
+                    key={value}
+                    id={`break-${value}`}
+                    value={String(value)}
+                    label={label}
+                    checked={pomodoro.shortBreakMinutes === value}
+                    onChange={(val) => {
+                      if (val)
+                        updatePreferences({
+                          pomodoro: {
+                            ...pomodoro,
+                            shortBreakMinutes: Number(val) as ShortBreakMinutes,
+                          },
+                        });
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Tema de cor */}
+            <div
+              className="flex w-full flex-col gap-2"
+              role="group"
+              aria-labelledby="theme-label"
+            >
+              <p
+                id="theme-label"
+                className="text-[#1a1a1a]"
+                style={{ fontSize: "var(--body-font-size)" }}
+              >
+                Tema de cor
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {COLOR_THEMES.map(({ value, hex, label }) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => updatePreferences({ colorTheme: value })}
+                    aria-pressed={colorTheme === value}
+                    aria-label={`${label}${colorTheme === value ? ", selecionado" : ""}`}
+                    className={cn(
+                      "size-10 rounded-full transition-transform hover:scale-110",
+                      colorTheme === value &&
+                        "ring-2 ring-[#4a4a4a] ring-offset-2",
+                    )}
+                    style={{ backgroundColor: hex }}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      </Card>
     </div>
   );
 }
