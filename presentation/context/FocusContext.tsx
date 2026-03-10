@@ -138,6 +138,8 @@ export function FocusProvider({ children }: { children: ReactNode }) {
   const blockDurationRef = useRef(0);
   const secondsRef = useRef(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const startedAtRef = useRef<number | null>(null);
+  const totalSecondsRef = useRef(0);
 
   const sounds = useRef({
     start: typeof Audio !== "undefined" ? new Audio("/sounds/start.mp3") : null,
@@ -175,6 +177,12 @@ export function FocusProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     secondsRef.current = secondsRemaining;
   }, [secondsRemaining]);
+  useEffect(() => {
+    startedAtRef.current = startedAt;
+  }, [startedAt]);
+  useEffect(() => {
+    totalSecondsRef.current = totalSeconds;
+  }, [totalSeconds]);
 
   // Hidratar do sessionStorage no mount para restaurar sessão de foco em caso de reload acidental ou navegação temporária para outra página.
   useEffect(() => {
@@ -197,6 +205,7 @@ export function FocusProvider({ children }: { children: ReactNode }) {
       isPausedRef.current = saved.isPaused;
       pausedAtRef.current = saved.pausedAt;
       blockDurationRef.current = saved.blockDuration;
+      startedAtRef.current = saved.startedAt;
 
       // Recalculate secondsRemaining from wall clock
       if (saved.startedAt && !saved.isPaused) {
@@ -306,6 +315,7 @@ export function FocusProvider({ children }: { children: ReactNode }) {
   const beginBlock = useCallback((durationSeconds: number) => {
     const now = Date.now();
     setStartedAt(now);
+    startedAtRef.current = now; // sync imediatamente
     setBlockDuration(durationSeconds);
     setPausedAt(null);
     setSecondsRemaining(durationSeconds);
@@ -313,8 +323,9 @@ export function FocusProvider({ children }: { children: ReactNode }) {
     blockDurationRef.current = durationSeconds;
     pausedAtRef.current = null;
     secondsRef.current = durationSeconds;
+    setTotalSeconds(durationSeconds);
+    totalSecondsRef.current = durationSeconds;
   }, []);
-
   // --- Timer end transition ---
 
   const handleTimerEnd = useCallback(() => {
@@ -413,11 +424,10 @@ export function FocusProvider({ children }: { children: ReactNode }) {
     const state = timerStateRef.current;
 
     if (state === "idle" || state === "cycle_done") {
-      const secs = preferences.pomodoro.focusMinutes * 60;
       playSound("start");
       setTimerState("focusing");
       timerStateRef.current = "focusing";
-      beginBlock(secs);
+      beginBlock(blockDurationRef.current); // usa current blockDuration, not preferences
       setIsPaused(false);
       isPausedRef.current = false;
       return;
@@ -452,20 +462,35 @@ export function FocusProvider({ children }: { children: ReactNode }) {
 
   const addFiveMinutes = useCallback(() => {
     const extra = 300;
-    setBlockDuration((d) => d + extra);
-    blockDurationRef.current += extra;
+    const newBlockDuration = blockDurationRef.current + extra;
+    const newTotalSeconds = totalSeconds + extra; // read from state — but use ref instead
+
+    // Update block duration synchronously
+    blockDurationRef.current = newBlockDuration;
+    setBlockDuration(newBlockDuration);
     setTotalSeconds((t) => t + extra);
 
     if (isPausedRef.current) {
-      // When paused, directly increase the displayed seconds
       const newRemaining = secondsRef.current + extra;
       setPausedAt(newRemaining);
       pausedAtRef.current = newRemaining;
       setSecondsRemaining(newRemaining);
       secondsRef.current = newRemaining;
+    } else if (startedAtRef.current === null) {
+      // Idle
+      const newRemaining = secondsRef.current + extra;
+      setSecondsRemaining(newRemaining);
+      secondsRef.current = newRemaining;
     } else {
-      // When running, shift startedAt back so elapsed recalculates correctly
-      setStartedAt((s) => (s !== null ? s - extra * 1000 : s));
+      // Running — shift startedAt back by extra seconds
+      const shifted = startedAtRef.current - extra * 1000;
+      setStartedAt(shifted);
+      startedAtRef.current = shifted;
+      // Recalculate remaining based on new startedAt and new blockDuration
+      const elapsed = Math.floor((Date.now() - shifted) / 1000);
+      const remaining = Math.max(newBlockDuration - elapsed, 0);
+      setSecondsRemaining(remaining);
+      secondsRef.current = remaining;
     }
   }, []);
 

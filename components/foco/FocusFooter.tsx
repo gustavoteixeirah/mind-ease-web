@@ -50,13 +50,18 @@ export function FocusFooter({ onReopen }: FocusFooterProps) {
       )}
     >
       <div className="flex gap-1 items-center">
-        <p className="text-sm leading-none mb-0.5">{label}</p>
+        <p
+          className="leading-none mb-0.5"
+          style={{ fontSize: "var(--label-font-size)" }}
+        >
+          {label}
+        </p>
         {/* <p className="text-sm font-medium truncate leading-snug">
           {activeTask.title}
         </p> */}
       </div>
       <div>·</div>
-      <div>
+      <div style={{ fontSize: "var(--label-font-size)" }}>
         <TimerInline progress={progress} formattedTime={formattedTime} />
       </div>
     </div>
